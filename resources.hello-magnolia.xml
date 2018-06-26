@@ -1,0 +1,2573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" sv:name="hello-magnolia">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>mgnl:folder</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>2bbe8c47-7217-4557-94de-25bcb963ce5d</sv:value>
+  </sv:property>
+  <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+    <sv:value>2018-06-15T08:41:17.707+02:00</sv:value>
+  </sv:property>
+  <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+    <sv:value>superuser</sv:value>
+  </sv:property>
+  <sv:node sv:name="templates">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>mgnl:folder</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>7d06f702-8fd0-41bf-8a57-de487fbaefc1</sv:value>
+    </sv:property>
+    <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+      <sv:value>2018-06-15T08:40:22.955+02:00</sv:value>
+    </sv:property>
+    <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+      <sv:value>superuser</sv:value>
+    </sv:property>
+    <sv:node sv:name="pages">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:folder</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>939f1267-4db6-40fe-af17-68db77d09ee5</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+        <sv:value>2018-06-15T11:28:06.250+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+      <sv:node sv:name="hello.ftl">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>26b13d0e-8e34-425d-812c-fdd3b715a4f2</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-21T15:08:07.879+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>&lt;!DOCTYPE html&gt;
+&lt;html xml:lang="${cmsfn.language()}" lang="${cmsfn.language()}"&gt;
+  &lt;head&gt;
+    [@cms.page /]
+
+    [@cms.area name="htmlHeader" contextAttributes={"pageDef":def} /]
+    &lt;title&gt;${content.windowTitle!content.title!}&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="${ctx.contextPath}/.resources/hello-magnolia/webresources/css/hello-style.css" media="all" /&gt;
+    &lt;script src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/hello.js"&gt;&lt;/script&gt;
+    
+    &lt;script src="https://code.jquery.com/jquery-1.9.1.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    $( document ).ready(function() {
+        console.log( "document loaded" );
+        
+        $("#profile_section").show();
+        $("#edit_section").hide();
+        $("#settings_section").hide();
+        
+        $(".profile_button").click(function profile() {
+            $("#profile_section").fadeIn();
+            $("#edit_section").fadeOut();
+            $("#settings_section").fadeOut();
+        }); 
+    
+        $(".settings_button").click(function settings() {
+            $("#profile_section").fadeOut();
+            $("#edit_section").fadeOut();
+            $("#settings_section").fadeIn();
+        }); 
+    
+        $(".edit_profile_button").click(function edit() {
+            $("#profile_section").fadeOut();
+            $("#edit_section").fadeIn();
+            $("#settings_section").fadeOut();
+        }); 
+    
+        $("#settingsForm").submit(function validateForm() {
+            var pw=document.forms["settingsForm"]["password"].value;
+            var pw2=document.forms["settingsForm"]["repeatPassword"].value;
+            
+            if (pw != "" &amp;&amp; pw2 != "") {
+                if (pw == pw2) {
+                    return true;
+                }
+                
+                else {
+                    alert("Lösenord matchar inte!");
+                    return false;
+                }
+            }
+            
+            else if (pw != "" &amp;&amp; pw2 == "") {
+                alert("Fyll i fältet Upprepa lösenord");
+                return false;
+            }
+            
+            else if (pw == "" &amp;&amp; pw2 != "") {
+                alert("Fyll i fältet Lösenord");
+                return false;
+            }
+            
+            else if (pw == "" &amp;&amp; pw2 == "") {
+                return true;
+            }
+            
+            
+            
+        });
+        
+        $("#editProfileForm").submit(function validateForm2() {
+        
+            var email = document.forms["editProfileForm"]["email"].value;
+            var filter = /\S+@\S+\.\S+/;
+            
+            if (filter.test(email)) {
+                return true;
+            }
+            
+            else {
+                alert("Email har fel format");
+                return false;
+            }
+            
+        
+        });
+        
+        
+        $('input[name=CV]:file').change(function() {
+            var fileName = $(this).val();
+            /*alert(fileName);*/
+            $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+            $(this).val('');
+            
+            $('.removeFile').on('click', function(){
+                $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+            });
+        });
+        
+        $('input[name=otherFile]:file').change(function() {
+            var fileName = $(this).val();
+            /*alert(fileName);*/
+            $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;input type="text" placeholder="Filbeskrivning*" class="file_description" /&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+            $(this).val('');
+            
+            $('.removeFile').on('click', function(){
+                $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+            });
+        });
+        
+        /* Testa när filer kan laddas upp till databas
+        $('input[name=profileImage]:file').change(function() {
+            var fileName=$(this).val();
+            $('.profile-pic').css("background-url", fileName);
+            
+        });*/
+        
+        $('input[name=addCompetence]').on('keydown', function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                var inputCompetence = $(this).val();
+                /*alert(inputTag);*/
+                        
+                $(this).siblings(".competence_box").append('&lt;div class="added_competence"&gt;'+inputCompetence +'&lt;div class="removeCompetence"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;');
+                $(this).val('');
+                        
+                /* Att fixa: Får endast välja tags som existerar */
+            }
+                    
+            $('.removeCompetence').on('click', function(){
+                $(this).parent().fadeOut(300, function() { $(this).remove(); });
+                /* Att fixa: Måste tas bort från sökkriterier och uppdatera sökning */
+            });
+        });
+        
+    });
+ 
+    $( window ).on( "load", function() {
+        console.log( "window loaded" );
+        
+        
+    });
+    
+    
+    
+    
+    
+    
+    &lt;/script&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="wrapper"&gt;
+        &lt;div class="top-menu"&gt;
+            &lt;div class="top-left"&gt;&lt;img src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/omicron.png" class="logo" /&gt;&lt;/div&gt;
+            &lt;div class="top-right"&gt;Inloggad som &lt;b&gt;Anna Åhlström&lt;/b&gt; &lt;button onclick="profile()" class="profile_button"&gt;Profil&lt;/button&gt; &lt;button onclick="settings()" class="settings_button"&gt;Inställningar&lt;/button&gt; &lt;a href="#"&gt;Logga ut&lt;/a&gt;&lt;/div&gt;
+        &lt;/div&gt;
+ 
+        
+            &lt;!--&lt;h1&gt;${content.windowTitle!content.title!} works!&lt;/h1&gt;--&gt;
+            [@cms.area name="consultant_profile"/]
+      
+            [@cms.area name="consultant_edit_profile"/]
+      
+            [@cms.area name="consultant_settings"/]
+        
+    &lt;/div&gt;
+ 
+&lt;script&gt;window.jQuery || document.write('&lt;script src="${ctx.contextPath}/.resources/travel-demo-theme/js/jquery-1.10.2.min.js"&gt;&lt;\/script&gt;')&lt;/script&gt;
+
+[#-- We're using the prototype's jsFiles to be rendered at the bottom of the page --]
+[#if def.jsFiles??]
+    [#list def.jsFiles as jsFile]
+        &lt;script src="${jsFile.link}"&gt;&lt;/script&gt;
+    [/#list]
+[/#if]
+
+&lt;script&gt;window.viewportUnitsBuggyfill.init();&lt;/script&gt;
+ 
+  &lt;/body&gt;
+&lt;/html&gt;</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="hello.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>7e9c894d-28a6-494c-b7c8-8308b3e24db9</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T10:44:27.854+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>title: hello
+templateScript: /hello-magnolia/templates/pages/hello.ftl
+renderType: freemarker
+modelClass: info.magnolia.module.jsmodels.rendering.JavascriptRenderingModel
+dialog: hello-magnolia:pages/hello
+visible: true
+areas:
+    consultant_profile:
+        templateScript: /hello-magnolia/templates/pages/areas/consultant_profile.ftl
+        renderType: freemarker
+    consultant_edit_profile:
+        templateScript: /hello-magnolia/templates/pages/areas/consultant_edit_profile.ftl
+        renderType: freemarker
+    consultant_settings:
+        templateScript: /hello-magnolia/templates/pages/areas/consultant_settings.ftl
+        renderType: freemarker
+        
+    
+
+availableComponents:
+  quotation:
+    id: hello-magnolia:components/quotation</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="omicron.png">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>723b776e-8a58-45c0-9280-c3c6ed17d025</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-08T10:50:06.170+02:00</sv:value>
+        </sv:property>
+        <sv:node sv:name="binary">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:resource</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>72eeaea2-7042-4feb-b55c-ab02e28d650d</sv:value>
+          </sv:property>
+          <sv:property sv:name="extension" sv:type="String">
+            <sv:value>png</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:data" sv:type="Binary">
+            <sv:value>iVBORw0KGgoAAAANSUhEUgAAB4YAAAIICAYAAACCZ4OTAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAU+dJREFUeNrs3V+MXNd9H/AzMl2nlSgyD4nkh4KLcuqnytwARpFGsrh5KRW3hWhLrgwUCceog8CQUNNNDRGGKy0doaDQ2KYLGUFgBRolCGDFkk0BjiC5KLKk5RoFjHgpGSiQjBDyoZWdvEiiXDiIo+k5mjvicLl/7vy/99zPBzi4u9Rod/Z379x/33vOafX7/QAAAFBXrW5vx4uafqfdUiEAAACAEG5QAgAAAAAAAIC8CYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAHhbq9s7H1s/tgdVAwAAAPIiGAYAAODtUDgu7iy+PRO/v01VAAAAIB+CYQAAgIZrdXtvhKuh8NBF4TAAAADkY58SAAAANFMR/H43tv3b/efY/jy2d6sUAAAA1J8ewwAAAA1UhMKbYftQeGhf0ZsYAAAAqDnBMAAAQMO0ur17wyAULnNN+A9UDAAAAOpPMAwAANAgrW7vwbj4esnrwSv9TvvnVA0AAADqTzAMAACZK3qHQtoWnomLMyVffrnfad+sagAAAJAHwTAAAGRs2DvUPLHEbeB8XHyk5Msv9DvtFVUDAACAfAiGAQAgU0UoPOwduj9+/9PYblOZRm4Ll+LizpIv/0q/0z6qagAAAJAXwTAAAGRoSyg89J7YNoXDjdsWUm/xQyVffqrfaT+gagAAAJAfwTAAAGRmh1B49BpAONyM7eC21Es8frm/xMvfiu2j/U77UZUDAACAPAmGAQAgP2dKXAcIhzNWrNvNMOglvpcUCq/2O+2nVQ4AAADyJRgGAID8XCh5LSAczlDRY/ylktd7V/qd9rtie1nlAAAAIG+CYQAAyEy/0z4ahMONtMcw4lulUPhmVQMAAIBmEAwDAECGhMPNE9fh+VA+FL4gFAYAAIBmEQwDAECmhMPNUYTCd5Z8+YVi2wAAAAAaRDAMAAAZKwLAr5S8NhAO11BcZ2+E8qHwKaEwAAAANJNgGAAAMtfvtB+Ii1Mlrw+EwzVShML7S748hcKPqhoAAAA0k2AYAAAaoAgEhcOZSOsntr8P5ULht2J7v1AYAAAAmk0wDAAADSEczkOxXjZLXs/9LLbVuO5fVjkAAABoNsEwAAA0iHC43uL6eDAuXip5LXclru93C4UBAACARDAMAAANIxyup7geHouLMyVffjmu55tVDQAAABgSDAMAQAMJh+sl1v98XNxf8uUX4vpdUTUAAABglGAYAAAaasxw+KViGGMWLNY9DR19Z8mXfyOu16OqBgAAAGwlGAYAgAYbIxxOzgiHFyvW+424KNtb+1Rcn/eoGgAAALAdwTAAADSccLh60tDdsf00frm/xMvfCoNQ+FGVAwAAAHYiGAYAAITDFVLM57wZ23tKvDyFwqtCYQAAAGAvgmEAAOBtwuHlK2q6WfJa7UoYhMIvqxwAAACwF8EwAADwDuHw8hS1PFPyOu1KXFc3C4UBAACAsgTDAADANYTDixdreD4MQuEyXk6hsKoBAAAA4xAMAwAA1xEOL04RCt9Z8uUX4rp5v6oBAAAA4xIMAwAA2yrC4RRCvlXi5cLhCcSa/XUoHwqfiuvkqKoBAAAAkxAMAwAAOyrmsF0NwuGZi7V6Iy5+oeTLTxVBPQAAAMBEBMMAAMCuhMOzFetzW2x/F7/cX+LlqebvFwoDAAAA0xIMAwAAexIOz0YKheNiM7Z9JV6ear1a1B4AAABgKoJhAACgFOHwdIp6vFTyOuxKrPe7hMIAAADArAiGAQCA0oTDkynqcKbky/8m1vlmVQMAAABmSTAMAACMZYJw+Jkm1yv+/edD+VD4QqzvL9rKAAAAgFkTDAMAAGMbMxz+SBGONk78u9PQ0XeWfHkKhY/augAAAIB5EAwDAAATGTMcvrNp4XD8e9+Ii9tKvvyUUBgAAACYJ8EwAAAwMeHw9eLfeFsRCu8v8fJUtxQKP2prAgAAAOZJMAwAAExFOHxVCoXjYjOUD4VXhcIAAADAIgiGAQCAqQmH3w6F7w2DULjMddbfhkEo/LKtBwAAAFgEwTAAADATTQ6H49/yYFx8veQ11pVYq58TCgMAAACLJBgGAABmponhcPwbnomLMyVffjnW6GZbCgAAALBogmEAAGCmRsLhKyVeXutwuHjvHyn58guxNiu2EAAAAGAZBMMAAMDMpXC46BmbbTgc3/Ol9N5LvvwrsR5HbRkAAADAsgiGAQCAuVlQOPyzkfb3W76fi/he34iLQyVffirW4QFbAwAAALBMrX6/rwoAAMB8LzwGQer+Ei/9Rr/TvqfCf8dtcfHnse0r8fI0z/J98e952hYAAAAALJsewwAAwNyV7DmcgtT1qv4NRSi8GcqHwqtCYQAAAKAq9BgGAAAWdwGyc8/hYZD6ckXf94Nxcabky68UQTgAAABAZegxDAAALMwOPYfT06ofFAoDAAAAzM8+JWASrW7vYFyslnjpa/1Oe1PFAAAYSsHpSM/hSvcUHtOF+HcctYYBAACAKjKUdO4ruNtbiYuV4tutYe5O4e4ybma9HgbztW21seX79JrXiq8v9TvtS9YyAEBtz1XTudy/qUMoXKLXsFAYAAAAqDTBcF1XXLeXAt0U7K4UbTTkTd8falhJLsd2qfh6GB5fKppeywAAzOIc/Ltx8Svb/KdT8XzzURUCAAAAqkwwXNUVc3Wo5pWiDYPgtDygQhM7HwahcQqKLxVts99pv6Y0AACUOE9P55N3jvyTUBgAAACoBcHwslfA1aGe18LVENgQdMuRbvJdKtpGMFQ1AADbn8On+ZFvDPnMjQwAAAA0gGB4kcUeDP+8ten9W23DuY83iuWmsBgAAAAAAIC6EQzPq7CDoaDXwiD8HS6FwHkYDYtTMxQ1AAAAAAAAlSYYnlUhB0NCr4WrIfARVWmUi+FqULwhKAYAAAAAAKBKBMOTFu5qj+DUjsd2SFUYkeYr3ojtXL/T3lQOAAAAAAAAlkkwPE6xBnMEr4VBEHxURSgpDT19rmh6EwMAAAAAALBwguG9CjQIgztBr2Bm59lQBMVCYgAAAAAAABZBMLxdUYTBLM7bIXG/0+4qBQAAAAAAAPMiGB4WottbiYuTQRjMcgyHmz5rTmIAAAAAAABmrdHBcKvbOxgGQXAKhI/YHKiIy7Gdja1rqGkAAAAAAABmoZHBcDFU9LB38AGbARU17EW83u+0LykHAEDlrzMejIt/rBJUxEa8jnhaGQAAABhqVDDc6vY6YTB38FGrnpo5HwYB8YZSAABU9nrj7+Jin0pQEZfj9cOKMgAAADCU/U2LYrjo1Du4E8wdTH2lhxn+LG7PKSBOQ0x3laSW+yOTugPQND+L5y3vVgYAAACA5cs2GB4JhFMzXDS5SAHx0bh9r6dtu99pn1MSAAAAAAAA9pJdMCwQpiFS7/dvFj2IDTENAFANNygBrvcBAABwoThnAmEaanSI6U6/076kJABAlU7TG/b3Coapkp8pAQAAAKOyuHHR6vZSGHwptoeDUJhmSgHxX8XPwtniIQkAgCroKwEAAABANdS6x3Cr2zseF2fDYFhdIIRPxdaJn42O+YcBABbuzdh+ThmoiMtKAAAAwKhWv1+/h/hb3d5KXHTDoJcksD3DS1dv36XXFABN87N4LvJuZQAAAABYvtoFw61ubz0MhowG9vZ6bOv9TvusUgAAAAAAADRXbYLhVre3Fga9hA0bDeNLvYeP9zvt15QCAAAAAACgeSofDLe6vYNxsR4Gc6cCk0u9h1M4vKEUAAAAAAAAzXJDld9cq9tbjYuNIBSGWTgQ258Vw7EDAAAAAADQIJXtMdzq9k7GxZesIpgLQ0sDAAAAAAA0SOWC4WLo6G5sd1s9MFeXwyAc3lQKAAAAAACAvFUqGC6Gjj4X2yGrBhbCvMMAAAAAAAANUJk5hlvdXicufhCEwrBIw3mHO0oBAAAAAACQr0oEw61u72xcPGF1wNI8IRwGAAAAAADI11KHki7mE06h8AmrAirhyX6n3VEGAAAAAACAvCwtGC5C4Y3YjlgNUCnCYQAAAAAAgMwsZShpoTBU2on4Ge0qAwAAAAAAQD4WHgy3ur3VuNgMQmGoshPmHAYAAAAAAMjHQoeSLkLhjdgOKD3Uwsf7nXZXGQAAtr2+uS0t4/nSy6oBAAAAVN3CegwLhaGWnoif3ePKAADM+Nrg3gz+hhQKp5GQNocBMQAAAECVLaTHcDGn8KUgFIY6ej22tX6nvakUAMCU1wXDMDU9oHoqnl88msHfkbwV26qewwAAAECVzb3HcBEKbwShMNRV+uyeKz7LAACTXhdsDVPPxH97sKZ/x8Ut11Lpaz2HAQAAgEqbazA8EgofUWqotUOxnVMGAGDC64KtofBQrcLhkb+jtcO1lXAYAAAAqKx59xjuBqEw5OJoq9tbVwYAYBy7hMJDZ2oUpm7ucQ0lHAYAAAAqa27BcKvbOxsXdysxZOXh+NleUwYAoOQ1wb1h7zA1FK+pg8+WvMYSDgMAAACVM5dguNXtdeLiU8oLWTLfMABQ5pogDRH99ZLXHC/W4W/qd9qPxsWpktdZwmEAAACgUmYeDLe6vdW4eEJpIVsHwmCYeACAna4JUih8puTLT/U77aN1+duEwwAAAEBdzTQYLnoRnlNWyN7d8fN+XBkAgG2uCcYNhR+t298oHAYAAADqaNY9hruxHVJWaISuIaUBgFFNCIWHhMMAAABA3cwsGG51eyfj4m4lhcYwpDQAMHo9cD40JBQeEg4DAAAAddLq9/vT/5DBvMIbYRAUAc3yq/1Oe0MZAKDBFxWDUPjOEi99K7bPzisUju9jx4ub+Dtbc/z7y/aUTn//anwvL9tqAAAAgEWbVY/hbhAKQ1N1lQAAmmvMUHg1h57CW43Zc/ilIkgGAAAAWKipg+FWt7ceF0eUEhrrUDGUPADQMBOEwtn2lB0jHE7OCIcBAACARZsqGG51eytx8bAyQuOtx/3BQWUAgOYQCl9POAwAAABU2bQ9hrtKCITBUPJ6DQNAQ7S6vTeCUHhbwmEAAACgqiYOhlvdXicujiohUDip1zAA5K8IhfeXeOmV0LBQeEg4DAAAAFTRRMFwEf6cVT5ghF7DAJC5cULhfqd9cxND4SHhMAAAAFA1k/YYTuHPAeUDtu4b9BoGgDyNGwqrmHAYAAAAqJaxg+FWt7cSFw8rHbANvYYBIDPx/P+22H4ahMITGQmH3yrxcuEwAAAAMDeT9BheVzZgF3oNA0AmUigcF5uxvafEy/9GKLy9IhxeDcJhAAAAYInGCoaL3sInlA3YReo1fFwZAKDeRkLhMtcMF/qd9i+q2s6K+ZaFwwAAAMDSjNtjeF3JAPsKAMjbBKHwUVXbm3AYAAAAWKbSwbDewsAYDsV9xpoyAED9CIXnSzgMAAAALMs4PYbXlQsYQ0cJAKBeihDypSAUnivhMAAAALAMpYJhvYWBCZyI+46DygAA9VCEj2dKvvwbQuHpCIcBAACARSvbY7ijVMAEjisBAFTfmKHwqX6nfY+qTW+CcPgZVQMAAAAmtWcwXPT4O6lUwATsOwCg4iYIhR9VtdkZMxz+SFxf51UNAAAAmESZHsOpx98BpQImcKQYih4AqKB4nH4sCIWXbsxw+E7hMAAAADCJMsGwHn/ANAwnDQAVVISL95d8uVB4zoTDAAAAwLztGgy3ur10Y+KIMgFT6CgBAFRLESreWeKlKaR8v1B4MYTDAAAAwDzt1WO4o0TAlAwnDQAVMmYovFqElSyIcBgAAACYF8EwsAhrSgAAyycUrgfhMAAAADAPOwbDrW4vzQt6QImAGTDPMAAsWTy//+sgFK4N4TAAAAAwa7v1GBbkALNytxIAwPK0ur034uIXSrz0Z0EoXBlpPcT2rvjllRIvFw4DAAAAuxIMAwvR6vbWVAEAlnIMTqHw/hIvvdLvtN8tFK6euE5uDsJhAAAAYErbBsOGkQbmYE0JAGCxxgyFb1ax6hIOAwAAANPaqcew3sLArK0pAQAsjlA4P8JhAAAAYBqCYWBRjioBAMxfq9u7Lba/D0LhLAmHAQAAgEldFwy3ur3VYBhpYA7MMwwAcz/W3hYXm2HnB0BHvSwUrifhMAAAADCJ7W4Y6S0MzMuaEgDAfIwZCl/od9rvV7X6Eg4DAAAA49ruptGasgBzsqoEADB7E4TCpnjIwJjh8BsqBgAAAM12zY2jVrd3MJgHFJgfwTAAzFg8h38wCIUba4xweL9wGAAAAJpt682jNSUB5uhQ8QAKADADRSh8JgiFG004DAAAAJSx9QaS3nzAvNnPAMAMjITCZZwSCudtzHD4QRUDAACA5tFjGFg0+xkAmNIEofCjqpa/kuHwBdsDAAAANNO+Ld/rRUBZr4fBXHahWL625b+vFM12Rdhm2wAAJiQUZjcpHC6Gi96/zX82nDgAAAA02DvBcKvbM7wru7kY28aw9Tvt18b5n+P2tRIGPUVTOx7bASVtrBUlAIDJxHOq83FxZ8mXC4UbaodwWCgMAAAADTfaY3hNOdgi9Qruxna232lfmuYHFf9/t2jppmYnLtZjO6TMjeOGJABMYIxQ+K3YPisUbrYiHL5UnG8LhQEAAIBr5hjWY5ihFAifjm2l32mfnDYU3k78md3YVuKXny5+Hw3S6vYOqgIAjHXsHCcUXhUKU5xzp/PtjwqFAQAAgGQ0GF5RDqJnw+Bm4vq4w0VPIv6Os2HQW1043CweRAGAkiYIhV9WNUbOt59WBQAAACAZDYY9Rc6n+5328Xn0EN5N/H2bQTjcNCtKAAB7a3V7LwWhMAAAAAAz8HYw3Or2VpSi8T5e9N5diiIcPm41NIZ9DgDsIZ6jvxEXt5V4qVAYAAAAgD0NewyvKEWjpVC4u+w3Ed/DRlw8aXU0gjmGAWAXRSi8v8RLr8RzqHcJhQEAAADYyzAYXlOKxqpEKDziZDCkdBOYYxgAdjBmKHyzigEAAABQhh7DzfZkxULh1Gv4tbg4Z9UAAE0kFAYAAABgXgTDzXU5DHrnVtFZqyd7R5UAAK7V6vb+LgiFAQAAAJgTwXBznSx651ZOfF+bYRBcAwA0yf8s8Zq/EQoDAAAAMIlhMHxIKRrlfL/TrvpwzRtWU95a3d5BVQCAq+L5WRpR48IuL7kQX/OLKgUAAADAJG5odXsrytA46zV4jxtWU/ZWlQAArlWEw/9vm/90ofhvAAAAADCRfcEw0k1zud9pb9TgfV6yqoAmaXV7afSODxffjj44sd1DFEdK/tiLO/z75sjXvdjejO3VeHx4ypqo1TZzX1y8N7Zbixa2fD3Uju3GXX7UT4rtYKvhthGK5fA134zbiikf5ijW98a4ft8IV+cbFgqX95WRr98T298qCQAAAMBAKzzxl8fj8ptK0Rif7nfaZ2uxcXZ7fasra79ak4cUYNb7thTm/VIYhHcp9L0ptsMVeovDkPBHRUshsiBwedvLHXHxgWJbGYa+ewW9i/JKuBoY/6hY2lZmu/7/Oi7+t1AYAAAAgFlIwfB6XD6sFI3x8/1O+7VabJzdXnqfB6yybNXmIQWYYj+WegH/ehiEeinMO1LjP+fHYRASp/at+Pl90Rqe2/bSHtlmbqzhnzJ8uGCzWG7YXgAAmNE588myr3XPAQDgevuUoFHO1yUULqQbynrI5OugEpCjVrf3uTAI9VI7nNGfdktsx4r2YPw7Xyn20183BPXE20oKgj85sr3cksmflsLsI2HkQYj4t3qwAACAsufIHw4zGDEn/qwvjXw7nGZnOF3K20vhMQDQNCkYFs40xzklAJitkXAvDfmbbl7c2JA//XDR7ok1+HJcPh/b4wK/PbeXNJT4rxXby+EG/ekeLAAAYKfrqeEoS/N8uPbIluXw9/9yPB/9mDWR3Xa1EhcrI/+09fud/m3UojqrvF5cG+0k/betHX0uFe2d7+N2fMmaB+a4Xx1OdZakB7ZuKr4ePsQ1ah7T5g1HpxsaToEXwtWHvr7vvmQ5+4qTLppho2bv91LQYxio7glR6hmcTopuHzkZaqoU+p1ILdblu3HZjSdij9tK3tlWUhj80WJ7uUVF3rb1wYJ04i4kBgBozjnymZHrqWX6qbVRi+0ldWwa3sNOy2FHp7WRl9X1HuKBPd770ZI1Gv32/MjXG8UyhcvDAHqzZqNKAovZ16b7V/80DILfqUbtmIPh6HRDR3bZF6ZR61Jo3BsujRCypU7hib/cCMK3Rogbf6tmO6L1YP7rnJ2O2+S6MlCz/VK6cfGJ2O4KAr69pKHano+f81MNPpkWBo8vnbw/Hdt/jdvOZeUAAMjyeureUJ2Rlp6M550da2fp28Yw+F3Zph1SoblJ11yXtmmCY8h/v5vuW30wDILf1Jowql0avS6FxekhmR80uXOCOYab47wSUDErSkDNTpY+HgbD4FLO23PMxtqlmz5nmtCDeGRY8XtDs4aJnqUUot+fWqznC3H5hF7EAHM/fp0c/d7T9MAc9jMpEP6c6ylGhnheC1eDXx2WludQ0Y5us67SIt1PHvY0Ti0NWb2pbFDbc/7htA1HGlqG4eh1x4qa/EEYjGCX9mvfatIw1KnH8KXgyasm+HLcsE/WbGe1HvQYztn5uE2uKQMV3w+lp9kfaPAJ0yylHsQP5HiSNfLggGHF57ftPGZ4cqCB5yHp+PLe4tutc3el4017m/9tmUO9pSfw39zm30fn/xrqjb5WGA3Z7sfS/cbTYTDtTFXpMTy/9b8WrvYCTksBcD5SYHwpFIFx/AxtKAlU8hicOi/cUeyDb1SVUtczz8f2tdxD4hQM963vRqjdsL2C4fxPIgXDVHj/IxCenyfTvj2HYYKLeabvtZ0sjIAYyOU8Y/jAbgpxU8A7GvpWZQ6vZRrOCRbCtaHysIfS95v0ND/UeF/36bj4fKj+g5OC4dms75UwCB7WghC4yddrG8XxeiN+ri4pCSx8XzwaBt+uIlMZhsRZTnUmGG6OX63b01uC4ewJhqnifiedOJ1x8jR3r8b2UF0DvridpG2kE8wdvCzZ9j4HsjmfSDdkPhyuBr7DANiDRLP1kzDoeZxsjixfNQ0BLH0f+Mc1uqYSDE+2nlfCIAQeNqNRslUKUjaGTVAMc90np44L6Z6mKRvmI0119nROHRUEw80hGKZqFhIMF0HfB5Q7WzPpMVLcvPhCbPco6UI9E9ffvTU5JqVt5DNh0ENYIFyR7Se2387xyc0xt82TNoX8GFa3dp/BFPwOA2A9fqtj2PN4OGz1ZtDb2LUXc73GitvAh+IiPZhRp+lVBMPl1+9aXBwPgyDYw06Ma9ij+Jyhp13jMf01n/tUS7u+6MZ1d6ruf8g+67IxOxoHXJoqDQl8QhmylYYlnurmXtH78/5gbthluCfWP92s/Q/xOPVchS/KHiv2I7aRim0/sf1KXD8PNXx46S/ZFLIkGK7m8WAYAg/bYVWptFuKNgwvThTrMS3Szen0xdvBsYcxXHsx/TVWOicLg/mEyevYl4LgYTugIkzhSNE+Fber1+PyXBiExOeUxjWea76x9svpQbzUQziNzOE+1eKvLx6M66ATah4QC4apsteUgBm4VQnY5UTqseBJ52VLN9W/FtfH78YTqs9XbBsxZHT1vTe2r8Z1dVfQexiY/XEgBcGrRXO+kJcjo+s0rut0AzbNI9YbNmExjLW/THPwGb4yn/UpDGbe0naVHiQ6ISSG0vvmYSDseLt8tQ+IBcNU2aYSMAOCYbY7meoGvRmqZH9sp+N6eX8VhpaO7yP1dnkkCITrZNh7+BNV7n0OVP784L64+LUgCG6qw0U7VmwPKSy+WFyXprD4jzyABNftN9Mwlr8f3KTOYV2mY1+naMJgFmlrSNyN7aw5ieGd/bNAuLqGAXHqrPBYnUazEwwD0KSTqTTn1X8Lhn6sqjS0dLr5evcybrwW28d/CcKAukq9h/80rseHq9b7HKjseUEKND4ZBkFwuuFibmC2Gu1Z/Dtxm0m9itO5ymY81jyiPNiHhm/H9j7VqPV67MTFSddAVEQKiT8VBsNNnw+DnnhdZaHBx9kvhMGD8FT/mqFWo9kJhpvhdSUAnFC9PU/sb4RB71SqfTL17bi+Pr2onp96OmQn9T7/lbj93KUUwA77/BQGpyD4dhVhTMNexelhtt8Jgx7FaS7W78TjzlPKQ8P2pULh+q6/g2EQBqemdzBVdTS1uL2uh6u9iE07SFP20+keZupJbw7hekkh/rHinmalew8LhpvBkMxAk0+m0k2LPw5u/tZJusGU5h3+2LzDYSfb2Tq2zN7nQCXPB9Lwa3c5H2DGhj2K74/b2JfDICT+upCYBlxfCYXrue5W4mI9mFaJekn7nIdjOxm34bNBQEze+2kjHdZfur9Y+d7DN1hPAGR+QvW94CZwHaWe3Skcfmhe20Zsab7A+4NQOFfD3ueHlAIaex5wR2xPx/Zm/PZ3nA8wZ2mOsXuK85c3Y3s+tk8oCxl6NgiF63Y8XImtG7/8qyAUpr5S7/YUEF9KvYiLnu+Qy376ULpuiV/+aRAK5yJdF3y7uDddOYJhAHI9qXqsOKF6r2rUVgqHT88yHHay3TjvC8JhaOI5wOeKUQO+U1yQmzuYRUvbXJqiIvUW+FHxgMIdykIG+9fng7lo67S+DhbD8KZjokCYXIwGxCeVgwz21elBwu8FcwnnaDgi4qer9sYEwwDkdkJ1qLhhcb9qZGMm4XBxIuZku5kn4sJhaMY5wJkUwoVB72DBBVUx7En8nTRaSbGdOiZRx31susY6phK1WV+duLgUBgGaeYTJUdquvxS39RQQrykHNd1Xd+Piq0GnlpylTi9fnNeIiJMSDAO5aytBo06oUk+MNN+VGxb5mTgcLh4WSHP+fdHJdmMJhyHfY3/ax3eL4aIfDIMQDqrqcLGd/rAYalovYuqyr33MNVZt1tVqbBvxyyeCQJhmSNd4f1acDxpemjrtrw3v3yyni4fsKkEwDOTO0IHNOaFKczY8F8x3lftJ1ENjbhepl/APg3klGewbnlUGyOrY/1ixjz/hnI+auSkMQrbUi3jTXMRUfF+bzr+NxlSPdbUeFz+I7ahq0EDpfDD1Hj6uFNTEihI0zrGqhMOCYQByuABONyvSnLH7VSN7pcLhLb2Eb1I2Ckeq9IQmMPFx/9PFkNH328eTw7EpXJ2L+IxyULH9bXr49j+pROXXU+olnOYRflg1aLjUS/6beg8DFVaJcFgwDEDdL4KfjovTKtEou4bDeglT4iT8IWWAWh7zP1Tc+E4P/RgymtykbfpBATEV2uemoc6/Fjx8W/X11ImLjTB4yAQYSL2HN9JDE0oBVNDSw2HBMAB19m9ju0cZGum6cFgvYcbcfj6kDFAPw3mEw2B0EDe+yZ2AmErsd+PiD4JQuOrrKR0bzSUM20vnjBvFwxMAVbPUcFgwDECd/UMlaLR3wmG9hJnA48VNT6DCirlXvxcGPT+gSYYBsTmIWYZnY3ufMlT22HiwGEHDsRF2lx6aeCJ+Xs4qBVBBSxvRTjAMANRZCof/V9BLmPG9N7bfVwaorqIn1FeLzys01XAO4uc90MSCfDQYnaHKx8Y0NO6mdQRj+VRxXglQNaeX8RCoYBgAqLt/rgRM6FjR2xyokDSvZWy9oCcUXHPMiu2H8bPxmFIwZ/9ICSp7fEyh8EZsHhKB8Z0oRuE4qBRAxXwxXQMv8hcKhoGcL5pOqgIAe/iMHlhQqfO39LT0c7EdVg24Thod5f7ixvYdygGNOj4OQ2HzCcPkhvMOC4eBKtkfW3eRv1AwDABAk6Uhar+gDLB8RU/IrxYXxsDO0o3t5/QehsYcH4XCMNtjqHAYqJrDixzyXjAMAEDT3aPnFSxXmj81Lu5XCSgtPUAx7D1s5AvI9/goFIbZS+HwOWUAKubEouYbFgwDAEAIel3BkhSh8DGVgImkm9s/XNRNJGChx0ehMMzP0UX2zgMo6ZFF/BLBMAAAhHDETXVYrNTLMbZeEArDtNLcw181tDRkdYxMw9x2g1AY5in1zltXBqBCblnEQyuCYQAAGHhACWAxiqFvvx3bYdWAmbm/6IEP1N9GGIwIAMzXw/HYeVwZgAo5Me/pzgTDAAAwoNcwLM7/iO19ygAzdyz1xDfvMNRX/PyeDUJhWKRuMXQ7QFWcmecPFwwDAMBVeg3DnBU9GvUUhvlJn69vC4ehlsfI1HPxUyoBC5WGbO8qA1Aht8+z44JgGMiZp/0AGNeReQ/ZA01WhMLmFIb5Sz3yhcNQr2PkShBOwTKvA88qA1Ahc+u4IBgGAIBrfU4JYPZa3d5DQSgMiyQchnrphkHPRWA5PhWPmWvKAFTE3KY7EwwDAMC1bncTHWYrfqY+FBenVQIWTjgM9ThOnoyLoyoBS9dVAqBC5tJrWDAMAADXuim2TyoDzEYRSD2lErA0wmGo9nHyYFysqwRUwqH4mfR5BKoi9Rq+b9Y/VDAMAADXu1cJYGaeDYMHLoDlSeHwnygDVFKa19QQ0lAdDxdzfgNUwcdn/QMFwwAAcL3DrW7vDmWA6cTP0WNxcUQloBLeowRQuePkWlycUAmonHUlACri2KxH/hEMAwDA9j6mBDC54uGK31AJANjRuhJAJZ0oHtwAqILPzPKHCYaBnBmyEIBp3KUEMJXUW3i/MgDA9YrQ6ahKQGWtKwFQETOd7kwwDOSsrQQATMFw0jCh+Nk5EwwhDQC7WVcCqLSjeg0DFXFL3B/dN6sfJhgGAICdGU4axlTMf3S/SgDAjsfKtaC3MNTBuhIAFfHRWf0gwTAAAOxsVQlgbKeDKT0AYDfrSgC1kHoNrygDUAEzG9FOMAwAADsTDMMYiuHXT6gEAOx4rEznl3oLQ32sKwFQATMbTlowDAAAO7sxnnifVAYo7XNKAAC7cm4J9XI8XhMeVAagAn5tFj9EMAwAALvTaxhKKHoLH1MJANjxWJnCpeMqAbVywOcWqIiZDCctGAYAgN21lQBK0VsYAHaXwqUDygC1o6c/UAWHW93eoWl/iGAYyNmtSgDADOgxDHsoLk71FgaA3QmXoJ6OFPODAyzbr0/7AwTDQM5uUQIAZuDGYohcYGenlQAAdhbPJ1fi4ohKQG11lACogKlHtRMMAwDA3taUAHZ1lxIAwK7MUQo+wwDTmnr0AsEwAADszTzDsINWt5fmFjZSCwDsrqMEUGuHDCcNVMDUo48IhgEAYG+CYdiZ3sIAsAvDSEM29BoGqnBecd80/79gGAAA9narEsC2F6SH4uJ2lQCAXa0pAWRBMAxUwS9N8z8LhgEAYG+HlQC29RklAIA9CZMgD0da3d5BZQCWbKrOC4JhAAAoodXt3aEKcB3DSAPA3taUAHyeAWZkqvnOBcNAlty8B2AOPqAEcN35lt70ALD78TLdvD2gEpCNNSUAluymaf5nwTCQKzfvAZg18wzDtf61EgDAntaUAHymAWZoqge0BcMAAFCOYBiuZYQWANjbmhJAVswzDCzdNCOmCoYBAKCcm5QArnG7EgDAntaUALKzqgTAkk08YqpgGAAAymkrAQy0ur2TqgAAex4vV4L5hSFHa0oALNnEnRcEwwAAAIxLLwkAcLwEn22A5Zi488I+tQMAgFLMMQxXuRkGAI6XTfVsbJuxbaRv+p3228tWt5fW98Fivae2Ftsh5fLZBqgSwTAAAJRzixLAO44oAQDsaU0JsnE5tvXYzvU77de2e0H8983iy43hvxVhcZqC44QSZkXgDyyboaQBtjAPJADAHJhfGABKW1GC2kuB8Mf7nfZKbN2dQuGdpLA4tk788udje1I5szonXlMFYIkMJQ2wxU1KAABQrQtQKuu7sfXCYFjMdBP77NYXtLq9++LivcX6Ty31gDKSAsDu9CqstxTknhw3DN5O8TM68XiajrHdYPSVHKwoAVBHgmEAAADGYU61PFyM7fl+p32qzIvj657a+m9FWPzx2I4pJ8B1+8g1Vai11Eu4O+sfmnoQF9tGCogNL11vK0oA1JGhpAEAoCRD6MLbblWCWns1tt/sd9qrZUPhnaSwOLa74pcfDIOgGYCrDipBbc0lFB45fr5WDC/9ZaWutTUlAOpIMAwAAMA4DitBbb0Q27/od9qPz/KHxp/3Ygqa45dfUWKAdxhho57mGgpvOX6mh05PKzkAiyQYBgAAoBS95mvthdS7N7bL8/oF8Wc/EBcPK3Vj/UlsV5QB3qHHcP2cXlQoPHLsXA+DuYypn6NKACzRxHPVC4YBAAAoyzDS9fRCMeTz3MXf8/m4eEbJmyeu++fi4ndVAt6hx3C9nC9C2mXsPzvBlAwALIhgGAAAgLIEw/WT5hT+rUX+wn6nfW9cvKL0zVM8GPCCSsDb9Biuj9dj6yz5PXSshvppdXtrqgDUjWAYyNUvKwEAwMy1laB2Hprn8NG7OKP0zVT0TvdgAEwxxCMLdzbuuy4ted+5Gcw3DMACCIaBXB2L7dFgKB4A8qZXFot2kxLUysV+p/34Mn5x8XudizdXJ5hvGKiH1Fv4bEXey9ni/VAfK3P4mb/pOg+YJ8EwkKXUKyK2U7GlOX0+GNt3VQWADI93qVeWmwYskt5P9fLYkn//81ZBY49PLwbzDdNgrW7P/ML1kXoLv1aRfWd6H2etklpZmcN28HhxnZcCYg/ZATMnGAayl25KxHZHcUL1qoo01ivFCfWTI+0/h8Ewh8PvX3DSzR4u7tIuKQ9LOs4Jh4Ftz32W1Vt4xO9ZDY0+PqX5hj2gS1OZX7g+zno/VPQ4+njR4eUrqgHM0j4lAJp0QtXq9v57/PLZoLdL7n4cW5qfpxfbd+K6f2rcHxC3lc/FRXqg4PZg2MwmemVkG/pR3IbOjrHt3BcGIxWsFtsPLOIYd1fc9lLPvGOqwbzEbeykKtTK0xXYN12O281F596N9u9i+15s71UKoIKerEpv4ZFj52vx2JkeXD9h9dTC6gK2iQfiNpHuT3wxtv1KDkxLMAw0Sro5lU7a3DzPUgry0nqdKAjeZlt5JC3jtnIoLk7Hdk8QEOe+/WwW7Y+KfcWk207a/p6y/bCEY9xdxQ0DAQyQfKsi78N+qeHXX/HY9FD88quqQcOsKEEtnKvw+xIM18NCRgcoOrv83/jl14JwGJiSYBhoJDfPs5F6BqfeMF8r5jGbx7aSAsJO3F4ejss/DnqA2n4m336+EAYBMczT3bH9MHgQgfloK0FtvDKvY9sE0jm3m9vNvvZKN7PvDR7MpVlWlKAW+6eqBsMb1g7bbK/PxePpx+KXf6oajZHuW/WKNjyvTv5JbDfHdmtxjXZYqRiHYBhosnTz3LBm9fZ8GlJnQSfgKeC7o+jxcFrpbT8TbD/3xu3nE8HwT8x5Wyv2U19UDebAAwf1sVmh9/J9q4Pot4IHl4BqOV/hc/o0nHR6f0etJrZsGykcTnMO368a2fpubOkBz2+VfdCzGK3uk7HdFXSCooQblABo8MlUCmoeUgnG3G4+HxcPqwQTbj+Px8WHYvsL1WCO29mXiotJoLkqEwxXqOcyy7/2+opKABWy4VjODKwu+hcWD7i73svLT2JLc4t/MK7fO2I7Nc45dDrPKv6ftD3+ZmwXlZTdCIaBRitCmhdUgjG3G+Ew02w/6eT+X8b2pmowR6eUgDlYVYLa2KjY+3nFKiHdsLQtAI6VpQmG6+HAEq/3rih/7aWhoh+N50g3xdaZxQOV6V53ERD/x+C+EzsQDAMMhjVzoGTcE60UDj+jEky4/aReM/epBHPcxtIFpafIodn7gCpxrs3QGSWgITxMVX1VD14vWUXsca73DZWotSfjery1eHBuHttIGknsnwUP5bENwTDgZGoQ0Aj4mGTbudcJFlNsP88FQyoyX88rATSSoeOo8vnP47ZRGuKgElTa62ke34q/x0tWE3swkl29z4k6C/gdaYjpdjBaJlsIhgEGHlcCJqTXA9OcpKe5gTxcwLy2r0fCYK4imJVblaAWqtg7t2e1MOIxJQCWrPLDNMdz+UtWE3tsI6mji8CPMtvKXbYVRgmGAYIhN5lq2zFPNdPycAHz9KISMEO3KEEtVDGENZQ0W8+fPRgHANN7Wgkoef4lHOYdgmGAq9w8Z1JPKAFTnJwbUhHHNgCaxo1sYJk2lIAcFPcTfqwSlPRbsf2FMiAYBrjq95SACU/EnwqCPaZjLljmZUMJoHE2lYAanD+fCqY7AADnfizy/CsNP/7vY7uiGs0mGAa49uBoOGkmJdhjmv2Pm6PMa9t60bYFQEUZ1QIAHE9ZoOIewR+qRLMJhgGu5Sk7JqXHOS7mqKqeEgDg3AcAsvRHSsA4+p32A8HIh40mGAa4lpvnTHpSpcc50/JgCo5tVFar27tDFWrj+0pATc6fHwlGtQCAaY+n6X6UeYYZ12eVoLkEwwDXnkydVQWmoNcD09DrnHl5UwmYgQ8oQW3OZ52PUCcejAOA6f1ICRjzmuG5uHhBJZpJMAxwvVeUgAn9QAmY4qTcU77Mix7DAFSVYBgAHE9ZjkeUoJkEwwDXcwOdifQ77aeC4fCw/6F69BgGwLkPAADvKEYaMi1eAwmGAa5n+BWm4eYWth8AgBJM5QMAM6HHMJPqKkHzCIYBrieYwck49j/k5JtKAECFmUoDAGAJ+p32487FmkcwDHA9Q25i+8H2Q04XepdVAYAKM2ITAMDyvKgEzSIYBrienlVMQ49PpvF9JQAAAADG4F4m0/i6EjTLPiUAuFbqWdXqyvaYmGCPafY/L9r/AAANk6ZiOaIMbCMNbfmjkZZG1ylzsvzLsf00tluL1o7tRuUEcuVeJlNuP0/F7efL8ctbVKMZBMMAMNuTKcEeAADAeH4SBg8JpNaL11VnZ/nD4zXaobj4cBiExKvF0g1wABhIx99jytAMgmGA7V0MnloHAACAeXkltudj+07qrTTPX5R608XFNWFzq9u7Ly7+j9UAAILhJhEMA8DspSHPPH0OAABwrWEY/LU02tIy38i8w2gAqJEfKEFzCIYBYPbS/FeCYSaVbpYdVgYAADLyQmxP9zvtx5UCAKqlmGf4ayrRDIJhAIBqeVMJAADIRAqEH1l272AAYE+mVmwIwTAAAAAAMEsCYQCoFx0VGkIwDLC9zeAJKWA52koAAEBNpWlRzhgyGgBqpxfb7cqQP8EwAEC13KgEAADU0JP9TrujDAAA1XWDEgAAAAAAE3o1tn8lFAaAWttUgmbQYxgAAAAAmMTF2O7ud9qXlQIAoPoEwwAAAADAuF7od9p3KQMAQH0IhgEAAIB5ejwYmq4KXlUCZkgoDABQQ4JhAAAAYG76nfaLcfGiSkA2hMIAADV1gxIAAAAAACUIhQEAakwwDAAAAADs5aJQGACg3gTDAAAAAMBu0hzVdysDAEC9CYYBAAAAgN081O+0LysDAEC9CYYBAAAAgJ080++0H1cGAID6EwwDAAAAANtJQ0j/tjIAAORBMAwAAAAAbOcPDSENAJAPwTAAAAAAsNWP+532KWUAAMiHYBgAAAAA2KqrBAAAeREMAwAAAACj9BYGAMiQYBgAAAAAGPWiEgAA5EcwDAAAAACMOqsEAAD5EQwDAAAAAENpGGk9hgEAMiQYBgAAAACGhMIAAJkSDAMAAAAAQ5tKAACQJ8EwAAAAADC0oQQAAHkSDAMAAAAAyU/MLwwAkC/BMAAAAACQ9JQAACBfgmEAAAAAAACAzAmGAQAAAIBkUwkAAPIlGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyJxgGAAAAAAAAyJxgGAAAAAAAACBzgmEAAAAAAACAzAmGAQAAAAAAADInGAYAAAAAAADInGAYAAAAAAAAIHOCYQAAAAAAAIDMCYYBAAAAAAAAMicYBgAAAAAAAMicYBgAAAAAAAAgc4JhAAAAAAAAgMwJhgEAAAAAAAAyt08JAAAAgHlpdXt3xMUHVGLpXu132k8pAwAANJdgGAAAAJinT8R2QhmW7mJsgmEAAGgwQ0kDAAAAAAAAZE4wDAAAAAAAAJA5wTAAAPD/2bubELuu+wDgRw8tCraxdrJXmuJJNi1IgSya2saTTe1+gOXaxYaS6pnalBJDxtBSL0I9dr1wodRySQglBj+3BGyaYIs2IQ60fSIK3RgygqzKiL5Z2d5JRIEuCtNz9M6znmSN9L7fPef+fnC5Y3lGc/W/993z8T8fAAAAAFROYhgAAAAAAACgchLDAAAAAAAAAJWTGAYAAAAAAAConMQwAAAAAAAAQOUkhgEAAAAAAAAqJzHcDqdcNwAAAAAAALSXxHA73FvodR9z6wAAAAAAAGB+EsMAAAAAAAAAlZMYBgAAAAAAAKicxDAAAAAAAABA5VJi+KIw1O9Ib++UKAAAAAAAAEA7pcTwZWFohWMFXvOG2wYAAAAAAADzs5R0e2y4ZgAAAAAAAGgnieH22BACAAAAAAAAaKeUGB4IQyuUuMfwhtsGAAAAAAAA85MYbo+NAq/5hNsGAAAAAAAA87OUdHucLOlij/T2Ntyy6u0KAQAAAAAAwGqYMdwiR3p7WwVd7oY7Vr3LQgAAAAAAQJsc6e09JAqsi8Rwu2y5VgAAAAAAgLX5shCwLpaSbpfTBV3rKbcLAGig+4QAAAAAgBJ1DrqbfWFojZNHenvHCrlWiWEAoIkkhgEAAGgMyxJDaz/7J2b5OTOG2+d0AQ/zRjydcKuqZ49hAAAAaJZNIQAojmWJoZ2emOWHRonhi+LXGtsFXOOW29QKu0IAACvzqRCU40hvb1sUAFiTu4UAAKBeo8SwmXvtkZaTbvoyzafdJgCgoUqdRfOJWwcAAACNYCtN1maUGDZzr10aOwMh74H8uFuEwpkJWeYMWDWzaABAnd79AABg3WbKYZgx3E5nGjxr2Gzh9jAghUWQoAG8d6iRTnlA2cq63CUEAMUxwUWbDyY2Sgz3haJ1zjb0uuyn1hIH3U0DUgCVcEr0gBCwApIk1EZnJRTkSG/vaVGYW18IALiN+4SABZipb9OM4fZ6JFb0G5WEjdezFU8n3RpgCjrO8fywjjrLiQIv+6o7p5MAACb0BSGgchsFtDm23CamYOB7eQw6ZxFm6tu8lhg+6G5a0rWddhq2pPSOW9Ia51WoUIkCCvZEgde857YVRWIYaBNtL/cEVm1DCKiMge8FatrEPYo000TLztjXF8Wwde6NRy++gI415CX4iFtCg9hXCVSe4DCSdiybDnlqo7MSba+yWP6d2h3zOaQy+je0+2ipI729h6b9mfHEsFnD7S00+utMDudZyztuRas0+n1jP6XiCj+j64BVkxhm2e4qdMlyOIxVXtD2KosEA57x9dtwm1CWVs8AEBZha9ofGE8MD8Sv1ZWhtSSH8+/sheHsZdqj6fua20+pLGagME85ZGABGm801deEAGUbLaDt5V1Sq74QNP4Zb3qdXpuDSX1JCIr1oAHBLMDUM887KixkKTk8iC+irRVWwI7l585I1PZp+goFlvGovPCDMWZ+4r2D52wCB93Ns24JM7b7JJdQppbpISGgchLDeJZpgj8XAlb9DrCUNOPSrN3/jA33s8uePZxH5fWDpHBbNX3GsAqVCjDtoTOSWdxluS6UbwDedZWTGKZ2W029sNxvanXFMux7X+P+sWZT59g+SwwfdDcvN+RFxvp9IwxnD+8sI0GcR4z3g6RwmzV9IIpnsywSe8xDZySzelgIWHZ9xLJizKhpq2Eoa9H2KtNxA+HmYgJO8225NhZgsM5fHt/T34ynu9yGoqXlpCWHWcS7YGIdlRYOkUalvRyGCeJePE7P+WAei0c3HqmwfCMY9dZqeSBKFS9RGsHMPebxgMQLM5LoYBXsM8ws7nM9lEDbqwjPCsFsmtzvwWdONHif4a7bw4QkFOugTsS8pirPjt703/14PC6GjEkJ3DPpiJWl9N/n83MyGB2xsju4RQMvPYhptvFWfig9V4ycV6FiCdLMvfeEgRml/VxeEgaWWeluAImZMqmXUAOru+AdV640i+nEQXfTCoPUqhuP7SZdUPzMbQSrKTDZs5LK0UdFogq/ne5nLG8vCAWrqFffKjEMt/NIPsYLIVFhGoMGV6hOqFC1o/ADzw8LkFYr+GZsuL1WyPVKDJfp0YZ1yF8MOipL0JiBK7l+/YBbgrZXse6OxyvB7MVZpYHxjwhDo6Vne7uB10Q5Bmv83WaZ1uOefD8fEwpmlLYAee6gu/nWJN98w1LS8YfSUtJXxBCotMJ0J6+4PcU6aT8O5vCg5aSZUUnvHYnhcv2lEDCluxt0LU+4HWh7Fe9JdWUqdm/a+q5h17TtthRlsI5farZwldKg4OeEgTk8Nek3dm7xZ33xA5aoke+Y3NB90u0p2jNCwBx0TjJrw63xHaX5Go+7XfU37iBr0gxdA/fQ9irf3erKMxsIQRF2GvR+7Ibhtn5wJ98Sgiq9ajAWc3h00olTEsPAqu029LpeCc2aXcH0dJwzDzMhmKf8aLqvuU1FS0tCNaXjxx4yhYjPzNMNuRSJYbS96nDGCk0zGQhBEU40YdZwvIZjoUFJapr7OY/PSi/Y3qVW98fjH4WBOUw061xiGFil/YPu5uWmXVSsUP1eaui6PcVLHeevCwMzMhOCWZWwB5CO3PKdacjglatuRTEebkAdO717rFaAtlc9ekIwtYEQFONsTsyuU1pC2mBln/M7laN/rRyt3qMNGhhMef5wksF8n0sM22cYWKKmzhb+B7emGl0hYNmVJ7jJ8SY32nIy8UG3qXhp8Mq5BlzHJ25FMTYbcA32SETbqy4P5FlqTG4gBMVIyzfvrLHOfiqeXnYbuMNzkpLCBrS3w9fz/YZp3ROPb97pmzqH/PkH4gcsQeMSw7GQ/XFo1j5szOe4zgrmrDwZlckszjR4KXLLddbjZK63rJPEcDmaMNDpMbcBba8q6zw6qie3KwRF+UZ8vk+v4d2YZir3hL9MB93N/oqek28FSeG2eUWZy4zSrPPbLiktMQysUr9JF5ML10fdluqcyUvUwSxOWrKHGaTE6/eadlE5Wf2k21NdA2+dyeGP3IJi3LXOfYbz9h53uQ1oe1XpL7S3JtPErbS4o16evbvS3xnsF8tt2nTxuBC//LpotFJKDn9fGJjBq7ebwHBYYrgvbsASGkWNebdYfqV67zV49h7NZ8keZvFgA5+btPSw2cL1ScnhvTuNAF5SXe6C8Bfl2TXVs1Md7E+EH22vaqVVdt6VHJ7YeSEoSlpSur+q5HBe8exxYff5PuT5SAPtfhFsDdR2T8ZnYdfWZ0zp/nCb7ag6hzT4L4dm7GEFqCwto2KlY6J+KRHyE8lh5mDJHmZ9bhrRSZpnlZp5UK+0FOt3cwfBt+KxvcKOgk+FvxgPrqkulOrZ9ws/2l5VS8nhH6ovT2QgBMVZSXI4J4XPCHfRLi/p2Xg9HmkLl78KBvoylNr2P7LCHdM+N4etONa5zQ9ZThpYpH4TLkLHRKt8MQyTw0ayMyvJYWax9hk0ueJvuc72dBCkZeXeiMdPV/Q77TNcjrtXXe/N7z+d3Gh7tau+bInL2xsIQZFGyeHuEt6NG2lwn/KyCsvaRzwlhI8LLze5J1hSnOndcjsqiWFgVfrrvoDcYNUx0S4pOZySNC+u+PfuCX01UmfXj80+Z8rG2rvrGFSQZozmTiZJYZZpVwiK8uSqyrD8e94ScrS9Wvme2TMg91B9IShWSg6/HZ/tD1Iyd0Hvxm6uS1nZpw4DIaAyHwtBlR69uW/z0MSw5aSBRVrn/sLppZc7yp90J1opJWn+Pj4DF1a4zOZVYa+rAhWP/1rHfp4U/d55Jb93VpWQ6cXTj4JOJpbPjOGypFnD31tFfTuefhIsId162l6tlbY4+GHudLQH4o0MqCpf2gM4bd+xM2uCOCWE87vx7TBMOFOHgRBQk4Pu5nuiUK3Ut/nZypqdO3yzWcPAIqxtkEl82T0dT78IOsoJ4cF4/DR3VjwtHEwpdXSn/Tx/obOLKd876Zn512UliFNCOO8/lZaiu0fIWYGfC0F576Jl7keWy8WUFP6iULebthdh2OmY2lz/oc48lCfe7ItE8VIy9+V4/E+eQdy9U5I4/v+teJyNxyAME8LejfV9vvuiABQktdfSQL53j97h5ZY6ms4GI5mA+ayzovS7YThTAkZSZ0VKohgFxyx+Ix5p5vAFoWBCqQz6g3j8ezzOLuHvtzcZK5VGkaeGpEgU5+vxvqX798Ii/9K8XUdaLtjAFLS9GPdVdeYbpJmitqapx+P5SOXglfD5WeEb7ncrGPABlOrpoxN8U5o1rMMJmIfVBwAA6nExmPVSopQcPhXPf3zQ3ZyrMzNvr/CC5wBgIilx+LgwVClNpnpEGFr7uQYoUmeC7zkrTMAcLh50NwfCADCxXwkB0HB7QlCs0RL3vWmXeU3fn5akjke6/98NksIAk+oLAVRHYhgo1h1nDB90N3djw8+IcGBWPSEAmMqeehfQcKkj7ElhKFZa6jetCnYmtvUv5ft5NXy+g/O34vG/8UizjO+Lx3GhA5he2oc0LecPVKUvBECpjk74fWnW8NvCBczAMtIAAHX553j8jTBU4YF8JLaQAlie88GSw1ATM4aBYk2ylHQa2dYLNlQHpmcZaQCAyuT9aS+JBABMrC8EUI39WB++LAxAqTpTfG9PuIAp2aMcAKBOZkkAwOT6QgA+zwBNME1iOCV4rggZMAXLSAMA1EliGAAmlPYZDvpVoRZ9IQBKNnFiOC+PYPYfMKl3LKsCAFCnWM97TRQAYCp9IQCfZWi4i0JQv86U32/WMDCpnhAAAFTtZ0IAABOzqhqU7+JBd3MgDEDJpkoMmzUMTFFJ6gsDAEDVLggBAExMYhjK1xcCoHSdGX7GrGFgkvcEtNknQgBAC3xHCABgMnnCzTmRgKIZ4AEUb+rEsFnDwB3sx/dETxhoOYlhAKoX63z7wXLSADANSSUo1xUrJAI16Mz4cykxvC98wC30hABgLntCABTEctIAMDmJYfD5BVirmRLDedbwjvABN0nLzFtRAGA+V4UAKEVsG74UT78SCQCYqNxMfarviAQUSWIYqMKsM4ZDXir2vBACY87mRg4AAO1h1jAATK4nBFCctIy0xDBtsCsE9evM+fPbQgiMKkjBbGEAgDZ6WwgAYDJ5j1Jb9EFZekIA1GKuxHCsyKTRA68IIxDtmC0MANA+sQ74XjxdFAkAmJiB9VCWnhAAtegs4O9IFRmj3KDd9g+6mxo1cN1HQgBAy3xfCABgYr0wXHkNaL6LeYIcQBXmTgznGYJdoYRWs6w83Fg22muReVwVAqDAsu+1ePpUJABgonIz9afarxTKYDIMUJVFzBge7Y3xpnBCK52P7wCNGYDF2RMCoFA9IQCAie0IATTelYPupjoubfKJENSvs6i/KL4g04xB+0pB+3SFAACA2CZ8KZg1DACTlpuDeHpHJKDRzBambSSGW6Cz4L+vG+yPAW3ySm7IAABA0hMCAJjYjhBAY6U8h8QwUJ2FJobzJuz2GoV2uBg/8xowcLhfCQEAbZNnDV8SCQCYqNwcBNvzQVOdzfuBA1Rl0TOGQ15z3zIoUL+uEMBt2ScWgLZ6XQgAYGI7wQqM0DRmCwPV6izjLz3obnaD/YahZi/mFQIAWHw9SuMTKP099lY8/UwkAGCicjPNSNQGgGYxW5i2el8I6tdZ4t+9FY99IYbqnJe0AADgDtKS0r8UBgC4s7xVl0k20Az7ts+jxeWRnF4LdJb4AKURNaeDpVCgqopR/lwDAMDt2oMX4umfRAIAJrYtBOCzCLBsy5wxHPJSs1vCDNU4bRkVmJg9hgFotVhvfCGY/QQAk5ab/Xh6UyRgrc7Fz+IHwgDUrLPsX5CTw88KNRTvWfsKw1SuCgFzuCQEQCVSctiS0gAwmZ1gaz5Yl7TyqdnCEMKnQlC3zip+yUF3sxckh6Fkb+bPMQCrYWABUIW8pPTfiQQATFRujrbmA1ZvO34GB8IA4RMhqFtnVb9IchiK9U78/BotBwDArG3BV+PpQ5GAtbPVCZRRbqbV2l4UCVipcybFAG3RWeUvkxyG4lyMn9uuMMBMdLwBwHV/Fo//FgZYmx/Ett1TwgBliJ/Xs/F0TiRgJdLy7V1hANqis+pfKDkMxbgYjy1hgJlZCph52NMdqEpsB6YOtz8N9huGdXhZUhiK1A3DvhlgedK+wqfzMu7AkMkuleus45dKDkPjXUsKqxQBALDAdmDab/gZkYCVSQMxns/LuQPllZuj/YaviAYszXZevh24zmSXynXW9YtzcvhLKjfQOJLCsBgfCwEAfK4d+KN4elkkYOnS0u3PxM/cW0IBRZebgzBczU3/KSzem/YVBtqos85fnkfjpMrNvlsBjSApDIsr494TBebwiRAAFZeRafai5DAsz4fx+J08EAMov9xM/aenRQIW6p342doWBqCNOuu+gFy5ORXsmQHrdi5ICgM0hcQwUDXJYViab8fP12N5X2+gnnKzH2zLB4uSksJdYYBDWV69cp0mXERKRMUjJYffcUtgbRWi05LCAACssB0oOQyLk5aO/v34uXpBKKDacrMXhslhy0rD7CSFgdbrNOli8ktZBQdW60UVIlgaq2Ewq4+EAGgDyWFYiB8ES0dDW8rNXrDnMMxKUhggNCwxfFMFR2c6LFdqRDwRP3NnhQKgcfWhC6IAtOidJzkMs/k4Hs/Hz9BTlo6GVpWbaYnPrSA5DNOQFIbJvS8Edes08aLGKjhvukWwFGngxan4WftAKAAAaEAbMCWHn4/HL0UDJpJmCX8lfnbeEgpoZbmZ+k43gok1MAmrJcJ0ZYwBh5XrNPjhS/sOb8cvnwhGwMEipQEXW/HzNRAKWLpdIWAOnwoB0CY5wfVMGM6CBG7tUhjuJWyWMCg3L4fhxJp3RANuyWqJALfQafoF5hmNG/E453bBQipD27nxAECzfSIEQNvkPVK/EsyAgptdjce342dk017CwFi5eTnPhHw2mFgD41JdcstqiTAzkxUq1inhInMl53T88qvxMCIWppcGVmyoDMHKXRUCAJi6/bcfj1PBDCgY+TAevxk/Fy8IBXBI2dkLw9nDBlbB9dUSreIGszNZoWKdki42vsz78ZQ6CF5x62Aio1nCp80ShrXYEwI8PwAzt/+6YbjvsKWlaauU4Hk4fhYes2w0MEG5uZsHVuk3pa1SP+hXrZYIcHud0i44zx7eiV/+ejzOu4VwqDTDwixhgHKZcQ60Xt53OC0t/QPRoEVSQvj5lOCJxwXhAKYsO3fi6UtBvyntkmYJb+SJZcD8zBiu2NGCKzmDeNo60tvbiue0gfxJtxOuSZ0I2ypC0AgfCQEAzN32SzMln4ptv+fi+dV43C8qVOpSPF7PAyIA5ik70xK6qd+0G8878TghKlRKPygsh8RwxTql/wPSSz8vk/JssP8w7Zae/2fzqHKVIWhGGWWGB/OwHxLAjeXqaPawvYepTerU/tv4jG9KCgMLLjt74fq2fFdEhIroBwWYUaeWf0iq6MRjI0gQ0z5XcgX/VK7wAwBAldLs4bz38MNhmEyDko0vGf2ScABLKjtH2/JtBAliynetHzTlAfSDwlKZMVyxTm3/IAli2lYRCsP9M3ZSRV9IoJF0WjMrS5EDHN7uu5BXjnpeWUuBPgzXE8JmCAOrKjsliClZ6ud/MeR+UOGApZMYrtjRWv9hecRQL++lkY5H3G4qkSruaV/ts5LBAPVKSY9YjxEIgNu/K1NS7a34vnw9t/uOiwoNdTUME8JnbTcCrLnsTH1JO7HsTH1Lp4M9iGm2i7ns7AkFwGIcrf0fOJYg3sodBWfcdgqVRsbtqAhBcdIIu5PCAABLbfelZXhfygnix5S9NMileHw/Ht9JS6ELB9CgsjMliHtBvynNkybFfBCGCeFd4YC1eD8ebwhDnY625R+aN6Hvx4rOdjxv58qO0XCU4FyuCPWFAopk6RXmkUZHS24ATN7uGyWIn8ttvgdFhTVIs4N/Fo+34zP5nnAABZSf/XC937SbD+0QVu18GA5W+MAqibD2cmHfKnb1OtrCB/racilhuGTKVjAajmbazxWhtGf2QDigaFeFAABW3u4bLTH9UBgODE6ziO8SGZYsDej6cTA7GCi3/Ez9pte2L4tl6EYYLjXdDZLELLfs7IVhMnggHADLd7TN//ibRsOdzsfjHgvW6J1cEfpAKKAahtcx7/OjEwZg9jZf2sv12n6ulplmSdJS0SkZ/K69g4HKytBBuDFJvBX0nTK/tEx0PwyXijYzGJrNKnaVOioEn9tTYyMYDcdqnVMZAuAQZpwDLK7dN1pmOs0ifiYeT8XjuMgwg0/DcMDBv1gqGmhJGToIue80/XdehTEdqQ9V/yl3kpaI7qfDVnkA6ycxfOuKzmg03LFgJjHLIRkM7SlXUnnyhkgwI3tUAyy+bB7NIn4hltFPx/MfxeNUPB4QHW5jNDP4p5LBgLJ0uApjGG7XN54o3spl6r2i1FqjGcG7QSIYSpf6pAz+qZDE8O0rOZ/NJM6VnNPh+mi4EyLEFPZzpcgy0QBMWwkHYHltvpTgey+390YzidNZBwjJz8KwY9sy0QC3L0/7YdjvFXKZuhGGfaijs2RxnVJ/5yBcTwTv2icYqqJPqlISw9NVcq7N8IzH9tiS01v5ULlh3Gh0XDo+UCmC1kszTMxCYhYfCQHAytp74/sRp4HAXwvDjmyzidtjtER06th+TTgAZi5TByFPtBnJKzOOytWNsbPJN82X9hlNE6j6YZgIHuSy0iqIAAWSGJ6vgnM2H6lykyozW7lSs6VS0zrjieC0TMqukDTGrwkBDXgu/k/IPT8z1jcuxDqGiAOsvr2XZsB8lhjMs4lH7T2J4nqkRPBuPv7NrGBtLzwPLLVsHSUW+zf/v9yvOkocj583gj7WVRglfgc3Hya7QKulOvIZYajPkYODA1FYRmCHM4pHnQajDgSziutxfqwDoa+SBAAArWrvpU7qJ3I7bzMfx0Wm8SSCAcote7fylxv5SEZJ5BH9r0Pnx76+nMu9z31tYgtAS8tUieGVVmA2wo3J4vTfRr0125WxjoPRXhkqTQAAwM3tvZuTxfcFM4vXLc2A2gvXB/RKBAO0q2zeCNeTyCM3J5NvZWsNlzvIx+30b/FnErwATFc+Sgw3opKyFa6Pdhvtr3FSZFZqP1e+dsfO9soAAADmbe89HU9fCNeTxfdp7y3FKAmcjp/Httx7QgIAAHBTG1ViuME35/qotlsdZhpPZzTz9/LNZ6PqAACANbT3RjOM7w7DpPH42Uzjw6UE8NVwfSbwR2YCAwAATNgWlRgu+Ob19saXPknnY/nrrbFvq31vjfE9M/r5PL5fhlm/AABAqW2+7fzlKGE8mnE8+rO7Kv2nXwrD5O9uuJ4ElgAGAACYt50pMdyim31jInlk6xbfOsleG4vWn/DPJXoBAABubOuNEsijWce3+rops5Av5vMn+bjWzsvn92N7b98dBQAAWFL7UWIYAAAAWtIJ0Nt7KJ6+nP9zPHk87rA/Hzee2L3Z+HY9H9vvFwAAoBn+X4ABAInQr6pK4YUiAAAAAElFTkSuQmCC</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:lastModified" sv:type="Date">
+            <sv:value>2018-06-08T10:50:06.159+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+            <sv:value>admin</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:mimeType" sv:type="String">
+            <sv:value>image/png</sv:value>
+          </sv:property>
+        </sv:node>
+      </sv:node>
+      <sv:node sv:name="pf.png">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>ce2d0690-b54e-4ebf-ba2a-af92170e3228</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-08T13:15:02.740+02:00</sv:value>
+        </sv:property>
+        <sv:node sv:name="binary">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:resource</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>0324f69c-ee30-49c4-ad8a-1f24c921ef7d</sv:value>
+          </sv:property>
+          <sv:property sv:name="extension" sv:type="String">
+            <sv:value>png</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:data" sv:type="Binary">
+            <sv:value>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if4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAYFjlBQAAE0RJREFUAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAAAAABAlOgPAAAAAAAAAFGiPwAAAAAAAABEif4AAAAAAAAAECX6AwAAAAAAAECU6A8AAAAAAAAAUaI/AAAAAAAAAESJ/gAAAAAAAAAQJfoDAAAAAAAAQJToDwAAAAAAAABRoj8AAAAAAAAARIn+AAAAAAAAABAl+gMAAAC/9uyABAAAAEDQ/9ftCPSGAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmJL+AAAAAAAAADAl/QEAAAAAAABgSvoDAAAAAAAAwJT0BwAAAAAAAIAp6Q8AAAAAAAAAU9IfAAAAAAAAAKakPwAAAAAAAABMSX8AAAAAAAAAmAo+EheJybIrHAAAAABJRU5ErkJggg==</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:lastModified" sv:type="Date">
+            <sv:value>2018-06-08T13:15:02.733+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+            <sv:value>admin</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:mimeType" sv:type="String">
+            <sv:value>image/png</sv:value>
+          </sv:property>
+        </sv:node>
+      </sv:node>
+      <sv:node sv:name="login.ftl">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>b606cfea-ea26-48d3-89a0-4cb9f1e3840f</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-21T16:12:47.996+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>&lt;!DOCTYPE html&gt;
+&lt;html xml:lang="${cmsfn.language()}" lang="${cmsfn.language()}"&gt;
+    &lt;head&gt;
+        [@cms.page /]
+        &lt;title&gt;${content.windowTitle!content.title!}&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="${ctx.contextPath}/.resources/hello-magnolia/webresources/css/hello-style.css" media="all" /&gt;
+        &lt;script src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/jquery.js"&gt;&lt;/script&gt;
+        &lt;script src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/login.js"&gt;&lt;/script&gt;
+        
+        &lt;script src="https://code.jquery.com/jquery-1.9.1.min.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+            $(document).ready(function() {
+                
+                $("#login_section").show();
+                $("#register_section").hide();
+                $("#password_section").hide();
+        
+                $(".login_button").click(function login() {
+                    $("#login_section").fadeIn();
+                    $("#register_section").fadeOut();
+                    $("#password_section").fadeOut();
+                }); 
+    
+                $(".register_button").click(function register() {
+                    $("#login_section").fadeOut();
+                    $("#register_section").fadeIn();
+                    $("#password_section").fadeOut();
+                }); 
+    
+                $(".password_button").click(function password() {
+                    $("#login_section").fadeOut();
+                    $("#register_section").fadeOut();
+                    $("#password_section").fadeIn();
+                });
+                
+                $('input[name=CV]:file').change(function() {
+                    var fileName = $(this).val();
+                    /*alert(fileName);*/
+                    $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+                    $(this).val('');
+            
+                    $('.removeFile').on('click', function(){
+                        $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+                    });
+                });
+        
+                $('input[name=otherFile]:file').change(function() {
+                    var fileName = $(this).val();
+                    /*alert(fileName);*/
+                    $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;input type="text" placeholder="Filbeskrivning*" class="file_description" /&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+                    $(this).val('');
+            
+                    $('.removeFile').on('click', function(){
+                        $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+                    });
+                });
+                
+                $('input[name=addCompetence]').on('keydown', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        var inputCompetence = $(this).val();
+                        /*alert(inputTag);*/
+                        
+                        $(this).siblings(".competence_box").append('&lt;div class="added_competence"&gt;'+inputCompetence +'&lt;div class="removeCompetence"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;');
+                        $(this).val('');
+                        
+                        /* Att fixa: Får endast välja tags som existerar */
+                    }
+                    
+                    $('.removeCompetence').on('click', function(){
+                        $(this).parent().fadeOut(300, function() { $(this).remove(); });
+                        /* Att fixa: Måste tas bort från sökkriterier och uppdatera sökning */
+                    });
+                });
+                
+                $('.cookies').slideUp();
+            
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    
+    &lt;body&gt;
+        &lt;div id="wrapper"&gt;
+            &lt;div class="top-menu"&gt;
+                &lt;div class="top-left"&gt;&lt;img src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/omicron.png" class="logo" /&gt;&lt;/div&gt;
+                &lt;div class="top-right"&gt;&lt;button class="register_button"&gt;Registrera&lt;/button&gt; &lt;button class="login_button"&gt;Logga in&lt;/button&gt; &lt;/div&gt;
+            &lt;/div&gt;
+ 
+            
+                [@cms.area name="login"/]
+                [@cms.area name="register"/]
+                [@cms.area name="forgotten_password"/]
+            
+    
+            [@cms.area name="terms_and_conditions"/]
+            &lt;div class="cookies"&gt;Oi mate&lt;/div&gt;
+        &lt;/div&gt;
+ 
+        &lt;script&gt;window.jQuery || document.write('&lt;script src="${ctx.contextPath}/.resources/travel-demo-theme/js/jquery-1.10.2.min.js"&gt;&lt;\/script&gt;')&lt;/script&gt;
+
+        [#-- We're using the prototype's jsFiles to be rendered at the bottom of the page --]
+        [#if def.jsFiles??]
+            [#list def.jsFiles as jsFile]
+                &lt;script src="${jsFile.link}"&gt;&lt;/script&gt;
+            [/#list]
+        [/#if]
+ 
+    &lt;/body&gt;
+&lt;/html&gt;</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="login.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>a64515bd-7899-4cc2-9e11-3e1fc86006f2</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T10:30:27.143+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>title: login
+templateScript: /hello-magnolia/templates/pages/login.ftl
+renderType: freemarker
+modelClass: info.magnolia.module.jsmodels.rendering.JavascriptRenderingModel
+modelPath: /hello-magnolia/templates/pages/login.js
+dialog: hello-magnolia:pages/login
+visible: true
+areas:
+    login:
+        templateScript: /hello-magnolia/templates/pages/areas/login.ftl
+        renderType: freemarker
+    register:
+        templateScript: /hello-magnolia/templates/pages/areas/register.ftl
+        renderType: freemarker
+    forgotten_password:
+        templateScript: /hello-magnolia/templates/pages/areas/forgotten_password.ftl
+        renderType: freemarker
+    term_and_conditions:
+        templateScript: /hello-magnolia/templates/pages/areas/terms_and_conditions.ftl
+        renderType: freemarker
+
+availableComponents:
+  quotation:
+    id: hello-magnolia:components/quotation</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="searcher.ftl">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>eef38839-ce08-4bd7-a9d5-2978285c1f1e</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-21T11:19:02.642+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>&lt;!DOCTYPE html&gt;
+&lt;html xml:lang="${cmsfn.language()}" lang="${cmsfn.language()}"&gt;
+    &lt;head&gt;
+        [@cms.page /]
+        &lt;title&gt;${content.windowTitle!content.title!}&lt;/title&gt;
+        &lt;link rel="stylesheet" type="text/css" href="${ctx.contextPath}/.resources/hello-magnolia/webresources/css/hello-style.css" media="all" /&gt;
+        &lt;script src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/searcher.js"&gt;&lt;/script&gt;
+        
+        &lt;script src="https://code.jquery.com/jquery-1.9.1.min.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+            $(document).ready(function() {
+                $("#search_section").show();
+                $("#favourites_section").hide();
+                $("#settings_section").hide();
+        
+                $(".search_button").click(function search() {
+                    $("#search_section").fadeIn();
+                    $("#favourites_section").fadeOut();
+                    $("#settings_section").fadeOut();
+                }); 
+    
+                $(".favourites_button").click(function favourites() {
+                    $("#search_section").fadeOut();
+                    $("#favourites_section").fadeIn();
+                    $("#settings_section").fadeOut();
+                }); 
+    
+                $(".settings_button").click(function settings() {
+                    $("#search_section").fadeOut();
+                    $("#favourites_section").fadeOut();
+                    $("#settings_section").fadeIn();
+                });
+                
+                $(".star").click(function toggleFavourite() {
+                    $(this).toggleClass("starYellow");
+                });
+                
+                $(".more p").click(function toggleComplete() {
+                    
+                    $(this).parent().siblings(".complete").slideToggle();
+                    
+                    $(this).text(function(i, text){
+                        return text === "Visa mindre" ? "Visa mer" : "Visa mindre";
+                    })
+                    
+                });
+
+                
+                $('input[name=q]').on('keydown', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        var inputTag = $(this).val();
+                        /*alert(inputTag);*/
+                        
+                        $(".search_condition_box").append('&lt;div class="search_condition1"&gt;' +inputTag +'&lt;div class="closeTag"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;');
+                        $(this).val('');
+                        
+                        /* Att fixa: Får endast välja tags som existerar */
+                    }
+                    
+                    $('.closeTag').on('click', function(){
+                        $(this).parent().fadeOut(300, function() { $(this).remove(); });
+                        /* Att fixa: Måste tas bort från sökkriterier och uppdatera sökning */
+                    });
+                });
+                
+                
+
+                
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    
+    &lt;body&gt;
+        &lt;div id="wrapper"&gt;
+            &lt;div class="top-menu"&gt;
+                &lt;div class="top-left"&gt;&lt;img src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/omicron.png" class="logo" /&gt;&lt;/div&gt;
+                &lt;div class="top-right"&gt;Inloggad som &lt;b&gt;Anna Åhlström&lt;/b&gt; &lt;button class="search_button"&gt;Sök&lt;/button&gt; &lt;button class="favourites_button"&gt;Favoriter&lt;/button&gt; &lt;button class="settings_button"&gt;Inställningar&lt;/button&gt; &lt;a href="#"&gt;Logga ut&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+ 
+            
+                &lt;!--&lt;h1&gt;${content.windowTitle!content.title!} works!&lt;/h1&gt;--&gt;
+                [@cms.area name="search"/]
+
+                [@cms.area name="favourites"/]
+
+                [@cms.area name="searcher_settings"/]
+            
+        &lt;/div&gt;
+ 
+    &lt;/body&gt;
+&lt;/html&gt;</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="searcher.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>bf91afd3-bf42-4db2-839a-6d559661ce4f</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T10:47:42.038+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>title: searcher
+templateScript: /hello-magnolia/templates/pages/searcher.ftl
+renderType: freemarker
+dialog: hello-magnolia:pages/searcher
+visible: true
+areas:
+    search:
+        templateScript: /hello-magnolia/templates/pages/areas/search.ftl
+        renderType: freemarker
+    favourites:
+        templateScript: /hello-magnolia/templates/pages/areas/favourites.ftl
+        renderType: freemarker
+    searcher_settings:
+        templateScript: /hello-magnolia/templates/pages/areas/searcher_settings.ftl
+        renderType: freemarker
+
+availableComponents:
+  quotation:
+    id: hello-magnolia:components/quotation</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="hello.js">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>90288d3a-d967-490d-89c1-8ed455c90216</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T14:21:07.846+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>//function profile() {
+//    var x = document.getElementById("profile_section");
+//    var y = document.getElementById("edit_section");
+//    var z = document.getElementById("settings_section");
+    
+//    x.style.display='block';
+//    y.style.display='none';
+//    z.style.display='none';
+    
+//}
+
+function edit() {
+    var x = document.getElementById("profile_section");
+    var y = document.getElementById("edit_section");
+    var z = document.getElementById("settings_section");
+    
+    x.style.display='none';
+    y.style.display='block';
+    z.style.display='none';
+    
+}
+
+//function settings() {
+    //var x = document.getElementById("profile_section");
+    //var y = document.getElementById("edit_section");
+    //var z = document.getElementById("settings_section");
+    
+    //x.style.display='none';
+    //y.style.display='none';
+    //z.style.display='block';
+    
+//}</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="login.js">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>d9828803-f9d0-4027-a9d8-546ec0ce1018</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T13:13:15.897+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>// For displaying different parts of page
+function login() {
+    var x = document.getElementById("login_section");
+    var y = document.getElementById("register_section");
+    var z = document.getElementById("password_section");
+    
+    x.style.display='block';
+    y.style.display='none';
+    z.style.display='none';
+    //fade(y);
+    //fade(z);
+    
+}
+
+function register() {
+    var x = document.getElementById("login_section");
+    var y = document.getElementById("register_section");
+    var z = document.getElementById("password_section");
+    
+    x.style.display='none';
+    y.style.display='block';
+    z.style.display='none';
+    
+}
+
+function password() {
+    var x = document.getElementById("login_section");
+    var y = document.getElementById("register_section");
+    var z = document.getElementById("password_section");
+    
+    x.style.display='none';
+    y.style.display='none';
+    z.style.display='block';
+    
+}
+
+//jQuery("h1").addClass("yellow-bg");
+
+//window.onload = changeColor;</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="searcher.js">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>868c4dca-aca2-4268-85b3-51db67692282</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T11:21:39.157+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>function search() {
+    var x = document.getElementById("search_section");
+    var y = document.getElementById("favourites_section");
+    var z = document.getElementById("settings_section");
+    
+    x.style.display='block';
+    y.style.display='none';
+    z.style.display='none';
+    
+}
+
+function favourites() {
+    var x = document.getElementById("search_section");
+    var y = document.getElementById("favourites_section");
+    var z = document.getElementById("settings_section");
+    
+    x.style.display='none';
+    y.style.display='block';
+    z.style.display='none';
+    
+}
+
+function settings() {
+    var x = document.getElementById("search_section");
+    var y = document.getElementById("favourites_section");
+    var z = document.getElementById("settings_section");
+    
+    x.style.display='none';
+    y.style.display='none';
+    z.style.display='block';
+    
+}
+</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="jquery-3.3.1.min.js">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>c3b2feca-24e4-4df7-b970-83ff772ae060</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:created" sv:type="Date">
+          <sv:value>2018-06-14T13:34:31.991+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:createdBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-14T14:54:16.923+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:template" sv:type="String">
+          <sv:value>resources:js</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>/*
+ * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
+ *
+ * Uses the built in easing capabilities added In jQuery 1.1
+ * to offer multiple easing options
+ *
+ * TERMS OF USE - jQuery Easing
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright Â© 2008 George McGinley Smith
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+*/
+
+// t: current time, b: begInnIng value, c: change In value, d: duration
+jQuery.easing['jswing'] = jQuery.easing['swing'];
+
+jQuery.extend( jQuery.easing,
+{
+	def: 'easeOutQuad',
+	swing: function (x, t, b, c, d) {
+		//alert(jQuery.easing.default);
+		return jQuery.easing[jQuery.easing.def](x, t, b, c, d);
+	},
+	easeInQuad: function (x, t, b, c, d) {
+		return c*(t/=d)*t + b;
+	},
+	easeOutQuad: function (x, t, b, c, d) {
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeInOutQuad: function (x, t, b, c, d) {
+		if ((t/=d/2) &lt; 1) return c/2*t*t + b;
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInCubic: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t + b;
+	},
+	easeOutCubic: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t + 1) + b;
+	},
+	easeInOutCubic: function (x, t, b, c, d) {
+		if ((t/=d/2) &lt; 1) return c/2*t*t*t + b;
+		return c/2*((t-=2)*t*t + 2) + b;
+	},
+	easeInQuart: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutQuart: function (x, t, b, c, d) {
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeInOutQuart: function (x, t, b, c, d) {
+		if ((t/=d/2) &lt; 1) return c/2*t*t*t*t + b;
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	easeInQuint: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t*t + b;
+	},
+	easeOutQuint: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t*t*t + 1) + b;
+	},
+	easeInOutQuint: function (x, t, b, c, d) {
+		if ((t/=d/2) &lt; 1) return c/2*t*t*t*t*t + b;
+		return c/2*((t-=2)*t*t*t*t + 2) + b;
+	},
+	easeInSine: function (x, t, b, c, d) {
+		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+	},
+	easeOutSine: function (x, t, b, c, d) {
+		return c * Math.sin(t/d * (Math.PI/2)) + b;
+	},
+	easeInOutSine: function (x, t, b, c, d) {
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	},
+	easeInExpo: function (x, t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function (x, t, b, c, d) {
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function (x, t, b, c, d) {
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) &lt; 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	},
+	easeInCirc: function (x, t, b, c, d) {
+		return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+	},
+	easeOutCirc: function (x, t, b, c, d) {
+		return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+	},
+	easeInOutCirc: function (x, t, b, c, d) {
+		if ((t/=d/2) &lt; 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+		return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+	},
+	easeInElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a &lt; Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	easeOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a &lt; Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},
+	easeInOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+		if (a &lt; Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		if (t &lt; 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+	},
+	easeInBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	easeOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	},
+	easeInOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158; 
+		if ((t/=d/2) &lt; 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	easeInBounce: function (x, t, b, c, d) {
+		return c - jQuery.easing.easeOutBounce (x, d-t, 0, c, d) + b;
+	},
+	easeOutBounce: function (x, t, b, c, d) {
+		if ((t/=d) &lt; (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t &lt; (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+		} else if (t &lt; (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+		} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+		}
+	},
+	easeInOutBounce: function (x, t, b, c, d) {
+		if (t &lt; d/2) return jQuery.easing.easeInBounce (x, t*2, 0, c, d) * .5 + b;
+		return jQuery.easing.easeOutBounce (x, t*2-d, 0, c, d) * .5 + c*.5 + b;
+	}
+});
+
+/*
+ *
+ * TERMS OF USE - EASING EQUATIONS
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright Â© 2001 Robert Penner
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ */</sv:value>
+        </sv:property>
+        <sv:node sv:name="jquery-min.js">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:mixinTypes" sv:type="Name" sv:multiple="true">
+            <sv:value>mgnl:deleted</sv:value>
+            <sv:value>mgnl:hasVersion</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>598f0e5c-c187-4dff-82ec-dd17991823df</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:created" sv:type="Date">
+            <sv:value>2018-06-14T13:36:42.057+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:createdBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:deleted" sv:type="Date">
+            <sv:value>2018-06-14T13:37:18.738+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:deletedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-14T13:37:18.736+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:template" sv:type="String">
+            <sv:value>ui-admincentral:deleted</sv:value>
+          </sv:property>
+        </sv:node>
+      </sv:node>
+      <sv:node sv:name="jquery-min.js">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>fc5fcae8-5b51-45dd-af62-4569f8da4afc</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:created" sv:type="Date">
+          <sv:value>2018-06-14T13:38:03.303+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:createdBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-14T13:38:19.761+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:template" sv:type="String">
+          <sv:value>resources:reference</sv:value>
+        </sv:property>
+        <sv:property sv:name="reference" sv:type="String">
+          <sv:value>/hello-magnolia/templates/pages/jquery-3.3.1.min.js</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="areas">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:folder</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>4d041878-fdc9-4e91-9d82-24807b46f348</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-18T10:56:52.204+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:node sv:name="login.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>9a58dbf8-4679-4719-b413-8e462d56382b</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-19T14:18:16.970+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="login_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Logga in&lt;/h1&gt;
+      
+    &lt;div class="loginbox"&gt;
+        &lt;form&gt;
+            &lt;select class="width100"&gt;
+                &lt;option value="konsult"&gt;Fristående konsult&lt;/option&gt;
+                &lt;option value="searcher"&gt;Anställd&lt;/option&gt;
+            &lt;/select&gt;
+        
+            &lt;label for="uname"&gt;&lt;h2&gt;Användarnamn&lt;/h2&gt;&lt;/label&gt;
+            &lt;input type="text" placeholder="Skriv ditt användarnamn" class="width100" name="uname" required&gt;
+
+            &lt;label for="psw"&gt;&lt;h2&gt;Lösenord&lt;/h2&gt;&lt;/label&gt;
+            &lt;input type="password" placeholder="Skriv ditt lösenord" class="width100" name="psw" required&gt;
+            &lt;br /&gt;&lt;br /&gt;
+            &lt;button type="submit"&gt;Login&lt;/button&gt;
+            &lt;label&gt;
+                &lt;input type="checkbox" checked="checked" name="remember"&gt; Kom ihåg mig
+            &lt;/label&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+      
+    &lt;div class="box-bottom"&gt;
+        &lt;button class="register_button"&gt;Registrera användare&lt;/button&gt; &lt;button class="password_button"&gt;Glömt lösenord?&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="consultant_profile.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>37f1a1e2-5a4e-443f-8dc1-cae0b1fc8c2c</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-18T14:23:23.711+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>
+&lt;div id="profile_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Min profil&lt;/h1&gt;
+      
+    &lt;div class="container-left"&gt;
+        &lt;div class="profile-pic"&gt;&lt;/div&gt; 
+        &lt;br /&gt;&lt;h2&gt;Uppladdade filer&lt;/h2&gt;
+        &lt;div class="file"&gt;&lt;a href="#"&gt;CV.pdf&lt;/a&gt;CV&lt;/div&gt;
+        &lt;div class="file"&gt;&lt;a href="#"&gt;annan_fil.pdf&lt;/a&gt;Filbeskrivning&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="container-right"&gt;
+      &lt;h2&gt;Om&lt;/h2&gt; 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+      
+      &lt;h2&gt;Kompetens&lt;/h2&gt;
+      &lt;span class="main-comp"&gt;Lorem&lt;/span&gt; 
+      &lt;span class="main-comp"&gt;ipsum&lt;/span&gt; 
+      &lt;span class="main-comp"&gt;dolor&lt;/span&gt; 
+      &lt;span class="other-comp"&gt;sit&lt;/span&gt; 
+      &lt;span class="other-comp"&gt;amet&lt;/span&gt;
+      
+      &lt;h2&gt;Kontaktuppgifter&lt;/h2&gt;
+      &lt;b&gt;Telefon:&lt;/b&gt; 073-555 55 55 
+      &lt;br /&gt;&lt;b&gt;E-mail:&lt;/b&gt; annaahlstrom@live.se
+    &lt;/div&gt;
+      
+    &lt;div class="box-bottom"&gt;
+        &lt;button class="edit_profile_button"&gt;Redigera profil&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="consultant_edit_profile.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>b78e4c67-28c1-435a-a3de-f1c4bba5b8ca</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-21T14:38:41.286+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="edit_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Redigera profil&lt;/h1&gt;
+    &lt;form name="editProfileForm" id="editProfileForm" &gt;
+        &lt;div class="field"&gt;
+            Förnamn*:&lt;br&gt;
+            &lt;input type="text" name="firstname" placeholder="Förnamn" required&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Efternamn*:&lt;br&gt;
+            &lt;input type="text" name="lastname" placeholder="Efternamn" required&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Mailadress*:&lt;br&gt;
+            &lt;input type="text" name="email" placeholder="Mailadress" data-validation="email" required&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Telefonnummer:&lt;br&gt;
+            &lt;input type="text" placeholder="Telefonnummer"&gt;
+        &lt;/div&gt;
+        
+        &lt;br /&gt;Om mig:&lt;br&gt;
+        &lt;textarea name="message" placeholder="Om mig" class="about-me" rows="10" cols="30"&gt;&lt;/textarea&gt;&lt;br /&gt;
+        
+        &lt;div class="CV-box"&gt;
+        Ladda upp CV: &lt;input type="file" value="Ladda upp CV" title="Ladda upp fil" name="CV"&gt;&lt;br /&gt;
+        &lt;div class="upload_files_box"&gt;
+
+        &lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+        
+        &lt;div class="other-files-box"&gt;
+        Ladda upp andra filer: &lt;input type="file" value="Ladda upp annan fil" title="Ladda upp fil" name="otherFile"&gt;&lt;br /&gt;
+        &lt;div class="upload_files_box"&gt;
+
+        &lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+        
+        Ladda upp profilbild: &lt;input type="file" value="Ladda upp profilbild" name="profileImage" title="Ladda upp fil"&gt;&lt;br /&gt;
+        &lt;div class="profile-pic"&gt;&lt;/div&gt;&lt;br /&gt;
+        &lt;a href="#"&gt;Ta bort profilbild&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
+        
+        Huvudkompetenser:&lt;br /&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k1"&gt; Kompetens 1&lt;/div&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k2"&gt; Kompetens 2&lt;/div&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k3"&gt; Kompetens 3&lt;/div&gt;
+        
+        &lt;br /&gt;Övriga kompetenser:&lt;br /&gt;
+        &lt;input type="search" name="addCompetence"&gt;
+        &lt;br /&gt;&lt;div class="competence_box"&gt;&lt;/div&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+
+        &lt;input type="submit" value="Spara"&gt;
+        
+    &lt;/form&gt;&lt;br /&gt;
+    Fält markerade med * är obligatoriska.
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="consultant_settings.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>c4a453ec-30a2-47d4-96cc-0c4626acf878</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-19T10:34:20.116+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="settings_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Inställningar&lt;/h1&gt;
+    &lt;form name="settingsForm" onsubmit="return validateForm()" method="post" id="settingsForm"&gt;
+        &lt;h2&gt;Byt lösenord&lt;/h2&gt;
+        &lt;div class="field"&gt;
+            Välj lösenord:&lt;br&gt;
+            &lt;input type="text" placeholder="Lösenord" name="password"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Upprepa lösenord:&lt;br&gt;
+            &lt;input type="text" placeholder="Upprepa lösenord" data-validation="confirmation" data-validation-confirm="password" name="repeatPassword"&gt;
+        &lt;/div&gt;
+        
+        &lt;br /&gt;
+        &lt;h2&gt;Visa/dölj profil&lt;/h2&gt;
+        
+        &lt;input type="radio" name="showHideProfile" id="show" value="show" checked="checked"&gt;
+        &lt;label for="show"&gt;Visa&lt;/label&gt;&lt;br /&gt;
+        &lt;input type="radio" name="showHideProfile" id="hide" value="hide"&gt;
+        &lt;label for="hide"&gt;Dölj&lt;/label&gt;
+        
+  
+        &lt;br /&gt;&lt;br /&gt;&lt;a href="#"&gt;Ta bort profil&lt;/a&gt;&lt;br /&gt;
+        &lt;input type="submit" value="Spara"&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="register.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>7991f52a-aeab-47b7-8737-c7b642c3cac8</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-21T15:38:11.101+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="register_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Registrera fristående konsult&lt;/h1&gt;
+    &lt;form&gt;
+        &lt;div class="field"&gt;
+            Förnamn*:&lt;br&gt;
+            &lt;input type="text" name="firstname" placeholder="Förnamn"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Efternamn*:&lt;br&gt;
+            &lt;input type="text" name="lastname" placeholder="Efternamn"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            &lt;div id="changeToRed"&gt;Mailadress*:&lt;br&gt;&lt;/div&gt;
+            &lt;input type="text" placeholder="Mailadress"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Telefonnummer:&lt;br&gt;
+            &lt;input type="text" placeholder="Telefonnummer"&gt;
+        &lt;/div&gt;
+        
+        &lt;br /&gt;Om mig:&lt;br&gt;
+        &lt;textarea name="message" placeholder="Om mig" class="about-me" rows="10" cols="30"&gt;&lt;/textarea&gt;&lt;br /&gt;
+        
+        &lt;div class="CV-box"&gt;
+        Ladda upp CV: &lt;input type="file" value="Ladda upp CV" name="CV"&gt;&lt;br /&gt;
+        &lt;div class="upload_files_box"&gt;
+            
+        &lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+        
+        &lt;div class="other-files-box"&gt;
+        Ladda upp andra filer: &lt;input type="file" value="Ladda upp annan fil" name="otherFile"&gt;&lt;br /&gt;
+        &lt;div class="upload_files_box"&gt;
+
+        &lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+        
+        Ladda upp profilbild: &lt;input type="file" value="Ladda upp profilbild"&gt;&lt;br /&gt;
+        &lt;div class="profile-pic"&gt;&lt;/div&gt;&lt;br /&gt;
+        &lt;a href="#"&gt;Ta bort profilbild&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
+        
+        Huvudkompetenser:&lt;br /&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k1"&gt; Kompetens 1&lt;/div&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k2"&gt; Kompetens 2&lt;/div&gt;
+        &lt;div class="field"&gt;&lt;input type="checkbox" value="k3"&gt; Kompetens 3&lt;/div&gt;
+        
+        &lt;br /&gt;Övriga kompetenser:&lt;br /&gt;
+        &lt;input type="search" name="addCompetence"&gt;
+        &lt;br /&gt;&lt;div class="competence_box"&gt;&lt;/div&gt;
+        &lt;br /&gt;&lt;br /&gt;
+        &lt;div class="field"&gt;
+            Välj lösenord*:&lt;br&gt;
+            &lt;input type="text" placeholder="Lösenord"&gt;
+        &lt;/div&gt;
+        &lt;div class="field"&gt;
+            Upprepa lösenord*:&lt;br&gt;
+            &lt;input type="text" placeholder="Upprepa lösenord"&gt;
+        &lt;/div&gt;
+        &lt;br /&gt;
+        &lt;input type="checkbox" value="Acceptera"&gt; Acceptera &lt;a href="javascript:void(0)" onclick="document.getElementById('light').style.display='table';document.getElementById('fade').style.display='block'"&gt;villkor&lt;/a&gt;*&lt;br /&gt;
+        &lt;br&gt;
+        &lt;input type="submit" value="Registrera"&gt;
+        &lt;input type="reset"&gt;
+
+&lt;!-- Terms and conditions --&gt;        
+&lt;div id="light" class="white_content"&gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+    &lt;div class="close_popup"&gt;&lt;a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"&gt;Stäng &amp;#10006;&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="fade" class="black_overlay"&gt;&lt;/div&gt;
+    &lt;/form&gt;&lt;br /&gt;
+    Fält markerade med * är obligatoriska.
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="forgotten_password.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>d8cef6a2-4c37-491a-afb8-d75f0ec59e78</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-19T14:16:44.067+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="password_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Glömt lösenord&lt;/h1&gt;
+        &lt;div class="loginbox"&gt;
+            &lt;form&gt;
+                Mailadress:&lt;br /&gt;
+                &lt;input type="text" class="width50" placeholder="Mailadress"&gt;
+                &lt;input type="submit" class="width50" value="Skicka länk för att byta lösenord"&gt;
+            &lt;/form&gt;
+      
+        &lt;br /&gt;
+        &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="terms_and_conditions.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>a1fa01b8-ea90-40f5-af84-945edce64bde</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-18T10:31:25.175+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="light" class="white_content"&gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+    &lt;div class="close_popup"&gt;&lt;a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"&gt;Stäng &amp;#10006;&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="fade" class="black_overlay"&gt;&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="search.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>9dd8ec04-4571-4d91-8f2f-dd8458522858</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-21T11:21:43.616+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="search_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Sök konsulter&lt;/h1&gt;
+        
+            &lt;input type="text" name="q" id="myInputTags" autocomplete="off" placeholder="Skriv in söktag och tryck enter"&gt;
+            &lt;!--&lt;input type="submit" value="&amp;#8629;" id="btnId"&gt;--&gt;
+        
+        
+        &lt;div class="search_condition_box"&gt;Söktags: &lt;/div&gt;
+      
+        &lt;div class="search_result"&gt;
+            &lt;div class="incomplete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;div class="profile-pic"&gt;&lt;/div&gt; 
+                &lt;/div&gt;
+            
+                &lt;div class="container-right"&gt;
+                    &lt;div class="favourite_marker"&gt; &lt;div class="star"&gt;&amp;#9733;&lt;/div&gt;&lt;/div&gt;
+                    &lt;h2&gt;Namn Namnsson&lt;/h2&gt; 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="complete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;h2&gt;Uppladdade filer&lt;/h2&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;CV.pdf&lt;/a&gt;CV&lt;/div&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;annan_fil.pdf&lt;/a&gt;Filbeskrivning&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="container-right"&gt;
+                    &lt;h2&gt;Kompetens&lt;/h2&gt;
+                    &lt;span class="main-comp"&gt;Lorem&lt;/span&gt; &lt;span class="main-comp"&gt;ipsum&lt;/span&gt; &lt;span class="main-comp"&gt;dolor&lt;/span&gt; &lt;span class="other-comp"&gt;sit&lt;/span&gt; &lt;span class="other-comp"&gt;amet&lt;/span&gt;
+                    &lt;h2&gt;Kontaktuppgifter&lt;/h2&gt;
+                    &lt;b&gt;Telefon:&lt;/b&gt; 073-555 55 55 
+                    &lt;br /&gt;&lt;b&gt;E-mail:&lt;/b&gt; annaahlstrom@live.se
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="more"&gt;&lt;p&gt;Visa mer&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="search_result"&gt;
+            &lt;div class="incomplete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;div class="profile-pic"&gt;&lt;/div&gt; 
+                &lt;/div&gt;
+            
+                &lt;div class="container-right"&gt;
+                    &lt;div class="favourite_marker"&gt; &lt;div class="star"&gt;&amp;#9733;&lt;/div&gt;&lt;/div&gt;
+                    &lt;h2&gt;Namn Namnsson&lt;/h2&gt; 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="complete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;h2&gt;Uppladdade filer&lt;/h2&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;CV.pdf&lt;/a&gt;CV&lt;/div&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;annan_fil.pdf&lt;/a&gt;Filbeskrivning&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="container-right"&gt;
+                    &lt;h2&gt;Kompetens&lt;/h2&gt;
+                    &lt;span class="main-comp"&gt;Lorem&lt;/span&gt; &lt;span class="main-comp"&gt;ipsum&lt;/span&gt; &lt;span class="main-comp"&gt;dolor&lt;/span&gt; &lt;span class="other-comp"&gt;sit&lt;/span&gt; &lt;span class="other-comp"&gt;amet&lt;/span&gt;
+                    &lt;h2&gt;Kontaktuppgifter&lt;/h2&gt;
+                    &lt;b&gt;Telefon:&lt;/b&gt; 073-555 55 55 
+                    &lt;br /&gt;&lt;b&gt;E-mail:&lt;/b&gt; annaahlstrom@live.se
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="more"&gt;&lt;p&gt;Visa mer&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      
+        
+&lt;/div&gt;      
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="favourites.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>da953aee-6aa4-4079-9790-0bb87f867056</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-20T16:02:12.219+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="favourites_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Favoritmarkeringar&lt;/h1&gt;
+    &lt;div class="search_result"&gt;
+            &lt;div class="incomplete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;div class="profile-pic"&gt;&lt;/div&gt; 
+                &lt;/div&gt;
+            
+                &lt;div class="container-right"&gt;
+                    &lt;div class="favourite_marker"&gt; &lt;div class="star"&gt;&amp;#9733;&lt;/div&gt;&lt;/div&gt;
+                    &lt;h2&gt;Namn Namnsson&lt;/h2&gt; 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id risus orci. Phasellus quam nulla, scelerisque id pharetra lobortis, egestas a orci. Nunc sed enim sit amet dolor lobortis consectetur eu ac orci. Cras vel sagittis massa, rhoncus auctor enim. Pellentesque placerat odio ac sem vulputate, ut vestibulum tortor scelerisque. Suspendisse rhoncus fermentum velit, sed consectetur lorem gravida accumsan. Phasellus bibendum arcu sed libero ornare sollicitudin. Praesent tincidunt ante non tincidunt imperdiet. Mauris purus nulla, finibus id sapien ac, malesuada condimentum odio. Vestibulum id congue justo, ut tempus ante. Pellentesque fermentum ornare lorem, eget placerat lorem accumsan vitae. Nulla eget nibh et dui rutrum dignissim. Etiam lobortis ut tellus a imperdiet. Quisque vestibulum commodo condimentum. Mauris posuere euismod interdum.
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="complete"&gt;
+                &lt;div class="container-left"&gt;
+                    &lt;h2&gt;Uppladdade filer&lt;/h2&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;CV.pdf&lt;/a&gt;CV&lt;/div&gt;&lt;div class="file"&gt;&lt;a href="#"&gt;annan_fil.pdf&lt;/a&gt;Filbeskrivning&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="container-right"&gt;
+                    &lt;h2&gt;Kompetens&lt;/h2&gt;
+                    &lt;span class="main-comp"&gt;Lorem&lt;/span&gt; &lt;span class="main-comp"&gt;ipsum&lt;/span&gt; &lt;span class="main-comp"&gt;dolor&lt;/span&gt; &lt;span class="other-comp"&gt;sit&lt;/span&gt; &lt;span class="other-comp"&gt;amet&lt;/span&gt;
+                    &lt;h2&gt;Kontaktuppgifter&lt;/h2&gt;
+                    &lt;b&gt;Telefon:&lt;/b&gt; 073-555 55 55 
+                    &lt;br /&gt;&lt;b&gt;E-mail:&lt;/b&gt; annaahlstrom@live.se
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="more"&gt;&lt;p&gt;Visa mer&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+        <sv:node sv:name="searcher_settings.ftl">
+          <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>mgnl:content</sv:value>
+          </sv:property>
+          <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>92b090e1-2ca2-4c7c-baed-090497cd347e</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+            <sv:value>2018-06-19T14:20:34.054+02:00</sv:value>
+          </sv:property>
+          <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+            <sv:value>superuser</sv:value>
+          </sv:property>
+          <sv:property sv:name="text" sv:type="String">
+            <sv:value>&lt;div id="settings_section"&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;Inställningar&lt;/h1&gt;
+    &lt;form&gt;
+        &lt;h2&gt;Ändra lösenord&lt;/h2&gt;
+        
+        &lt;div class="field"&gt;
+            Välj lösenord:&lt;br&gt;
+            &lt;input type="text" name="lastname" placeholder="Lösenord"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="field"&gt;
+            Upprepa lösenord:&lt;br&gt;
+            &lt;input type="text" name="lastname" placeholder="Upprepa lösenord"&gt;
+        &lt;/div&gt;&lt;br /&gt;
+        
+        &lt;input type="submit" value="Spara"&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/div&gt;</sv:value>
+          </sv:property>
+        </sv:node>
+      </sv:node>
+      <sv:node sv:name="test.ftl">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>410ba32e-01de-41bd-8774-1a4c3e71702e</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-21T15:08:07.879+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>&lt;!DOCTYPE html&gt;
+&lt;html xml:lang="${cmsfn.language()}" lang="${cmsfn.language()}"&gt;
+  &lt;head&gt;
+    [@cms.page /]
+
+    [@cms.area name="htmlHeader" contextAttributes={"pageDef":def} /]
+    &lt;title&gt;${content.windowTitle!content.title!}&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="${ctx.contextPath}/.resources/hello-magnolia/webresources/css/hello-style.css" media="all" /&gt;
+    &lt;script src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/hello.js"&gt;&lt;/script&gt;
+    
+    &lt;script src="https://code.jquery.com/jquery-1.9.1.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    $( document ).ready(function() {
+        console.log( "document loaded" );
+        
+        $("#profile_section").show();
+        $("#edit_section").hide();
+        $("#settings_section").hide();
+        
+        $(".profile_button").click(function profile() {
+            $("#profile_section").fadeIn();
+            $("#edit_section").fadeOut();
+            $("#settings_section").fadeOut();
+        }); 
+    
+        $(".settings_button").click(function settings() {
+            $("#profile_section").fadeOut();
+            $("#edit_section").fadeOut();
+            $("#settings_section").fadeIn();
+        }); 
+    
+        $(".edit_profile_button").click(function edit() {
+            $("#profile_section").fadeOut();
+            $("#edit_section").fadeIn();
+            $("#settings_section").fadeOut();
+        }); 
+    
+        $("#settingsForm").submit(function validateForm() {
+            var pw=document.forms["settingsForm"]["password"].value;
+            var pw2=document.forms["settingsForm"]["repeatPassword"].value;
+            
+            if (pw != "" &amp;&amp; pw2 != "") {
+                if (pw == pw2) {
+                    return true;
+                }
+                
+                else {
+                    alert("Lösenord matchar inte!");
+                    return false;
+                }
+            }
+            
+            else if (pw != "" &amp;&amp; pw2 == "") {
+                alert("Fyll i fältet Upprepa lösenord");
+                return false;
+            }
+            
+            else if (pw == "" &amp;&amp; pw2 != "") {
+                alert("Fyll i fältet Lösenord");
+                return false;
+            }
+            
+            else if (pw == "" &amp;&amp; pw2 == "") {
+                return true;
+            }
+            
+            
+            
+        });
+        
+        $("#editProfileForm").submit(function validateForm2() {
+        
+            var email = document.forms["editProfileForm"]["email"].value;
+            var filter = /\S+@\S+\.\S+/;
+            
+            if (filter.test(email)) {
+                return true;
+            }
+            
+            else {
+                alert("Email har fel format");
+                return false;
+            }
+            
+        
+        });
+        
+        
+        $('input[name=CV]:file').change(function() {
+            var fileName = $(this).val();
+            /*alert(fileName);*/
+            $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+            $(this).val('');
+            
+            $('.removeFile').on('click', function(){
+                $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+            });
+        });
+        
+        $('input[name=otherFile]:file').change(function() {
+            var fileName = $(this).val();
+            /*alert(fileName);*/
+            $(this).siblings(".upload_files_box").append('&lt;div class="upload_files_content"&gt;&lt;div class="upload_files_left"&gt;&lt;a href="'+fileName +'" target="_blank"&gt;' +fileName +'&lt;/a&gt;&lt;/div&gt; &lt;div class="upload_files_right"&gt;&lt;input type="text" placeholder="Filbeskrivning*" class="file_description" /&gt;&lt;div class="removeFile"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;').fadeIn('slow');
+            $(this).val('');
+            
+            $('.removeFile').on('click', function(){
+                $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+            });
+        });
+        
+        /* Testa när filer kan laddas upp till databas
+        $('input[name=profileImage]:file').change(function() {
+            var fileName=$(this).val();
+            $('.profile-pic').css("background-url", fileName);
+            
+        });*/
+        
+        $('input[name=addCompetence]').on('keydown', function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                var inputCompetence = $(this).val();
+                /*alert(inputTag);*/
+                        
+                $(this).siblings(".competence_box").append('&lt;div class="added_competence"&gt;'+inputCompetence +'&lt;div class="removeCompetence"&gt;&amp;#10006;&lt;/div&gt;&lt;/div&gt;');
+                $(this).val('');
+                        
+                /* Att fixa: Får endast välja tags som existerar */
+            }
+                    
+            $('.removeCompetence').on('click', function(){
+                $(this).parent().fadeOut(300, function() { $(this).remove(); });
+                /* Att fixa: Måste tas bort från sökkriterier och uppdatera sökning */
+            });
+        });
+        
+    });
+ 
+    $( window ).on( "load", function() {
+        console.log( "window loaded" );
+        
+        
+    });
+    
+    
+    
+    
+    
+    
+    &lt;/script&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="wrapper"&gt;
+        &lt;div class="top-menu"&gt;
+            &lt;div class="top-left"&gt;&lt;img src="${ctx.contextPath}/.resources/hello-magnolia/templates/pages/omicron.png" class="logo" /&gt;&lt;/div&gt;
+            &lt;div class="top-right"&gt;Inloggad som &lt;b&gt;Anna Åhlström&lt;/b&gt; &lt;button onclick="profile()" class="profile_button"&gt;Profil&lt;/button&gt; &lt;button onclick="settings()" class="settings_button"&gt;Inställningar&lt;/button&gt; &lt;a href="#"&gt;Logga ut&lt;/a&gt;&lt;/div&gt;
+        &lt;/div&gt;
+ 
+        
+            &lt;!--&lt;h1&gt;${content.windowTitle!content.title!} works!&lt;/h1&gt;--&gt;
+            [@cms.area name="consultant_profile"/]
+      
+            [@cms.area name="consultant_edit_profile"/]
+      
+            [@cms.area name="consultant_settings"/]
+        
+    &lt;/div&gt;
+ 
+&lt;script&gt;window.jQuery || document.write('&lt;script src="${ctx.contextPath}/.resources/travel-demo-theme/js/jquery-1.10.2.min.js"&gt;&lt;\/script&gt;')&lt;/script&gt;
+
+[#-- We're using the prototype's jsFiles to be rendered at the bottom of the page --]
+[#if def.jsFiles??]
+    [#list def.jsFiles as jsFile]
+        &lt;script src="${jsFile.link}"&gt;&lt;/script&gt;
+    [/#list]
+[/#if]
+
+&lt;script&gt;window.viewportUnitsBuggyfill.init();&lt;/script&gt;
+ 
+  &lt;/body&gt;
+&lt;/html&gt;</sv:value>
+        </sv:property>
+      </sv:node>
+    </sv:node>
+    <sv:node sv:name="themes">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:folder</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:mixinTypes" sv:type="Name" sv:multiple="true">
+        <sv:value>mgnl:deleted</sv:value>
+        <sv:value>mgnl:hasVersion</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>668aecdc-7efd-4611-9588-3c23d6b93bc6</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:deleted" sv:type="Date">
+        <sv:value>2018-06-15T08:40:00.287+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:deletedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="themes0">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:folder</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:mixinTypes" sv:type="Name" sv:multiple="true">
+        <sv:value>mgnl:deleted</sv:value>
+        <sv:value>mgnl:hasVersion</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>a5556674-6f89-4568-9088-3cd9a058e732</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:deleted" sv:type="Date">
+        <sv:value>2018-06-15T08:41:06.788+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:deletedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+    </sv:node>
+  </sv:node>
+  <sv:node sv:name="webresources">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>mgnl:folder</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>a3e1dfd8-51a5-41a3-a8a9-db0e3871ffc7</sv:value>
+    </sv:property>
+    <sv:node sv:name="css">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:folder</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>0446c5a7-a941-4c86-8ea2-83f429f94516</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+        <sv:value>2018-06-05T14:45:00.069+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+      <sv:node sv:name="hello-style.css">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>adb6435c-0e33-4d0d-aa31-250bcc8b4cb5</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-21T16:13:41.950+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>@import url(//fonts.googleapis.com/css?family=Raleway);
+@import url(//fonts.googleapis.com/css?family=Calibri);
+@import url(//fonts.googleapis.com/css?family=Helvetica);
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
+body {
+   padding: 20px;
+   font-family: Open Sans,Raleway, Helvetica, Arial, Tahoma, Verdana, sans-serif;
+   background-color: #005b7d; /* 1e5799 */
+   background-attachment: fixed;
+   overflow-y: scroll;
+}
+
+#wrapper {
+    
+}
+
+
+/*** CONTENT ***/
+
+.container {
+   
+   width: 100%;
+   /* height:500px; */
+   max-width: 960px;
+   margin: 100px auto 100px auto;
+   padding: 20px;
+   /*box-sizing: border-box;*/
+   background-color: white;
+   display:block;
+   position: relative;
+   vertical-align:middle;
+   float:center;
+   transition: all 2s linear;
+   position:absolute;
+   top: 0;
+left: 0;
+right: 0;
+/*bottom: 0;*/
+border-radius:5px;
+
+}
+
+.hidden {
+    display:none;
+    opacity:none;
+}
+
+.container-left {
+    display:inline-block;
+    float:left;
+    width:  20%;
+}
+
+.container-right {
+    display:inline-block;
+    float:right;
+    width: 78%;
+}
+
+.profile-pic {
+    height: 200px;
+    width:100%;
+    max-width:180px;
+    background: url(http://localhost:8080/magnoliaAuthor/.resources/hello-magnolia/templates/pages/pf.png);
+    background-size: contain;
+}
+
+.main-comp { /* Main competence */
+    background-color: #7ea1c2;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 5px 0 5px;
+}
+
+.other-comp { /* Other competence */
+    background-color:#817ec2;
+    padding: 5px;
+    margin: 0 5px 0 5px;
+    border-radius: 5px;
+}
+
+.file {
+    text-align:center;
+    background-color:#e1e1e1;
+    margin-bottom: 8px;
+    font-style: italic;
+    font-size: 12px;
+    display:block;
+    padding: 0px 0 3px 0;
+}
+
+.file a {
+    color: #888;
+    text-decoration:none;
+    display:block;
+    font-style:normal;
+    padding-bottom: 3px;
+    padding-top:3px;
+    font-size: 14px;
+    background-color: #e1e1e1;
+     -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    /* ...and now for the proper property */
+    transition:.5s;
+}
+
+.file a:hover {
+    background-color: #eeeeee;
+}
+
+.box-bottom {
+    text-align: right;
+    bottom:0;
+    display:inline-block;
+    width:100%;
+    margin-top: 50px;
+}
+
+.edit-button {
+    background-color: #9da5ba;
+    border:none;
+    padding: 8px;
+    border-radius: 5px;
+    font-family:'Calibri';
+    font-size: 16px;
+}
+
+/*** MENU ***/
+
+.top-menu {
+    width:100%;
+    display:block;
+    padding:0px;
+    background-color:#e1e1e1;
+    position:fixed;
+    top:0;
+    left:0;
+    margin-bottom:50px;
+    z-index:99999;
+}
+
+.top-left {
+    display:inline-block;
+    float:left;
+    height:100%;
+    width:50%;
+    padding: 10px 0 10px 0px;
+}
+
+.top-right {
+    display:inline-block;
+    float:right;
+    width:48%;
+    text-align:right;
+    padding: 10px 2% 10px 0;
+    vertical-align:middle;
+    position:relative;
+    margin: 7px 0 0 0;
+
+}
+
+.top-left a, .top-right a {
+    padding:8px;
+    text-decoration:none;
+     -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    /* ...and now for the proper property */
+    transition:.5s;
+    color: #333;
+    margin: 0 5px 0 5px;
+    background-color: #cecece;
+    border-radius: 8px;
+}
+
+.top-left a:hover, .top-right a:hover {
+    background-color:#009fdb;
+    color:#fff;
+}
+
+.logo {
+    height:30px;
+    margin-left: 20px;
+}
+
+
+main {
+   padding: 20px;
+   margin-bottom: 40px;
+}
+
+/****** COOKIES POPUP *******/
+.cookies {
+    position:fixed;
+    visibility:hidden;
+    left:0;
+    bottom:0;
+    width:80%;
+    background: rgba(225,225,225,0.5);
+    padding:5% 10% 5% 10%;
+}
+
+/** Login page **/
+
+.loginbox {
+    margin-top:40px;
+    margin-left: auto;
+    margin-right:auto;
+    width: 50%;
+    display:block;
+    position:relative;
+    border: none;
+}
+
+.width100 {
+    width:95%;
+}
+
+.width50 {
+    width:45%;
+}
+
+.field {
+    display:inline-block;
+    margin-right:40px;
+    margin-bottom: 30px;
+}
+
+.about-me {
+    width:100%;
+    height:200px;
+    margin-bottom: 30px;
+}
+
+/******** SEARCH PAGE *********/
+
+input[type=search] {
+    width:95%;
+    background-color: #e1e1e1;
+    font-size:26px;
+}
+
+.search_result {
+    width:100%;
+    /*height:200px;*/
+    background: #e1e1e1;
+    border-radius: 5px;
+    margin: 20px 0 0px 0;
+    overflow:hidden;
+}
+
+.search_condition1 {
+    padding:5px;
+    margin:5px;
+    border-radius:5px;
+    background:#e1e1e1;
+    display:inline-table;
+}
+
+.search_condition2 {
+    padding:5px;
+    margin:5px;
+    border-radius:5px;
+    background: #eeeeee;
+    display:inline-table;
+}
+
+.favourite_marker {
+    text-align:right;
+    margin: 14px 14px 0 0;
+}
+
+.favourite_marker a {
+    margin: 0 0 0 10px;
+    text-decoration:none;
+    color: #555555;
+}
+
+.starYellow {
+    color:yellow;
+}
+
+.incomplete {
+    display:table;
+}
+
+.complete {
+    display:none;
+}
+
+.more {
+    text-align:right;
+    display:block;
+    float:right;
+    width:100%;
+}
+
+.closeTag {
+    display:inline-table;
+    margin-left:10px;
+}
+
+#myInputTags {
+    width:100%;
+}
+
+/** Upload files **/
+
+.upload_files_box {
+    margin-top:10px;
+    padding-right:20px;
+    display:block;
+    width:100%;
+}
+
+.upload_files_content {
+    background: #e1e1e1;
+    padding: 10px;
+    display:table;
+    width:100%;
+    border: none;
+}
+
+.upload_files_content a {
+    color: #777;
+    text-decoration:none;
+     -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    /* ...and now for the proper property */
+    transition:.5s;
+}
+
+.upload_files_content a:hover {
+    color: #009fdb;
+}
+
+.upload_files_left {
+    display:inline-table;
+    width:45%;
+    float:left;
+    border: none;
+    vertical-align:middle;
+}
+
+.upload_files_right {
+    display:inline-table;
+    width:45%;
+    float:right;
+    text-align:right;
+    border: none;
+    vertical-align:middle;
+}
+
+.file_description {
+    margin:0 5% 0 0;
+    width:80%;
+}
+
+.removeFile {
+    display:inline-table;
+    margin-left: 10px;
+}
+
+/** Adding other competence **/
+.added_competence {
+    display: inline-block;
+    background: #e1e1e1;
+    margin:5px;
+    border-radius: 5px;
+    padding:5px;
+}
+
+.removeCompetence {
+    display:inline-table;
+    margin-left:10px;
+}
+
+/** Popup **/
+.black_overlay {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: .80;
+  filter: alpha(opacity=80);
+}
+.white_content {
+  display: none;
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  max-height: 50%;
+  padding: 16px;
+  border: 10px solid #009fdb;
+  background-color: white;
+  z-index: 1002;
+  overflow: auto;
+}
+
+.close_popup {
+    display: inline-table;
+    width:100%;
+    text-align:right;
+    vertical-align:bottom;
+    bottom:0;
+}
+
+.close_popup a {
+    background: #e1e1e1;
+    padding: 5px;
+    border-radius: 5px;
+    color: #333;
+    text-decoration:none;
+}
+
+/*** ***/
+
+h1 {
+   font-size: 20px;
+   font-family: 'Helvetica', Arial, Tahoma, Verdana, sans-serif;
+   font-weight: bold;
+   text-transform:uppercase;
+   background-color: #009fdb;
+   padding: 20px 0 20px 15px;
+   margin: 0 0 20px 0;
+   color:#fff;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+blockquote {
+   margin-bottom:40px;
+   margin-top: 65px;
+}
+blockquote cite {
+   padding-left:20px;
+   font-size: 1.3em;
+   color: #333;
+}
+blockquote p {
+   border: 5px solid #0066aa;
+   border-radius: 12px;
+   padding: 25px 15px;
+   position: relative;
+   background-color: #fff;
+   margin-bottom: 30px;
+}
+/** Add the bottom triangle for the quote bubble using CSS **/
+blockquote p:before, blockquote p:after {
+   position: absolute;
+   display: block;
+   border-style: solid;
+   content: "";
+   height: 0;
+   width :0;
+   box-sizing: border-box;
+}
+blockquote p:before {
+   left: 20px;
+   bottom: -30px;
+   border-color: transparent #0066aa transparent transparent;
+   border-width: 0 30px 30px 0;
+}
+blockquote p:after {
+   left: 29px;
+   bottom: -15px;
+   border-color: transparent #fff transparent transparent;
+   border-width: 0 15px 15px 0;
+}
+
+.yellow-bg {
+    background:yellow;
+}</sv:value>
+        </sv:property>
+      </sv:node>
+    </sv:node>
+  </sv:node>
+  <sv:node sv:name="dialogs">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>mgnl:folder</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>ae96a416-218f-47ab-8d8c-7022ab578ac5</sv:value>
+    </sv:property>
+    <sv:node sv:name="pages">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:folder</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>9d011338-0bf1-4344-ad1b-1a98f6656f00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+        <sv:value>2018-06-11T08:44:26.013+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+      <sv:node sv:name="hello.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>b6a4e83f-93a3-496e-a23f-bef69071695b</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-05T14:48:31.143+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>form:
+  label: Page properties
+  tabs:
+    - name: tabMain
+      label: hello
+      fields:
+        - name: title
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: title
+        - name: windowTitle
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: window title
+ 
+actions:
+  commit:
+    class: info.magnolia.ui.admincentral.dialog.action.SaveDialogActionDefinition
+  cancel:
+    class: info.magnolia.ui.admincentral.dialog.action.CancelDialogActionDefinition</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="login.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>1308430f-1201-4fbd-90fc-669be6d34380</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-11T08:42:40.433+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>form:
+  label: Page properties
+  tabs:
+    - name: tabMain
+      label: login
+      fields:
+        - name: title
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: title
+        - name: windowTitle
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: window title
+ 
+actions:
+  commit:
+    class: info.magnolia.ui.admincentral.dialog.action.SaveDialogActionDefinition
+  cancel:
+    class: info.magnolia.ui.admincentral.dialog.action.CancelDialogActionDefinition</sv:value>
+        </sv:property>
+      </sv:node>
+      <sv:node sv:name="searcher.yaml">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+          <sv:value>mgnl:content</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+          <sv:value>e203be08-1268-4a73-a81d-eda2537c3206</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+          <sv:value>2018-06-11T08:44:38.908+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+          <sv:value>superuser</sv:value>
+        </sv:property>
+        <sv:property sv:name="text" sv:type="String">
+          <sv:value>form:
+  label: Page properties
+  tabs:
+    - name: tabMain
+      label: searcher
+      fields:
+        - name: title
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: title
+        - name: windowTitle
+          class: info.magnolia.ui.form.field.definition.TextFieldDefinition
+          i18n: true
+          label: window title
+ 
+actions:
+  commit:
+    class: info.magnolia.ui.admincentral.dialog.action.SaveDialogActionDefinition
+  cancel:
+    class: info.magnolia.ui.admincentral.dialog.action.CancelDialogActionDefinition</sv:value>
+        </sv:property>
+      </sv:node>
+    </sv:node>
+  </sv:node>
+  <sv:node sv:name="themes">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>mgnl:folder</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>ccc1c5b6-6914-48b4-b595-27c36e108103</sv:value>
+    </sv:property>
+    <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+      <sv:value>2018-06-15T08:42:08.173+02:00</sv:value>
+    </sv:property>
+    <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+      <sv:value>superuser</sv:value>
+    </sv:property>
+    <sv:node sv:name="hello-magnolia-theme.yaml">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>mgnl:content</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>9c589d95-a22e-4531-acbb-2a2b59adb201</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModified" sv:type="Date">
+        <sv:value>2018-06-18T14:09:19.332+02:00</sv:value>
+      </sv:property>
+      <sv:property sv:name="mgnl:lastModifiedBy" sv:type="String">
+        <sv:value>superuser</sv:value>
+      </sv:property>
+      <sv:property sv:name="text" sv:type="String">
+        <sv:value>jsFiles:
+  jquery:
+    addFingerPrint: true
+    link: /.resources/travel-demo-theme/js/jquery-1.10.2.min.js
+  js.cookies:
+    addFingerPrint: true
+    link: /.resources/travel-demo-theme/js/js.cookies-2.1.2.js
+  jquery.object-fit-cover-simple:
+    addFingerPrint: true
+    link: /.resources/travel-demo-theme/js/jquery.object-fit-cover-simple.js
+  addtoany:
+    link: https://static.addtoany.com/menu/page.js
+  hello:
+    addFingerPrint: true
+    link: /.resources/hello-magnolia/templates/pages/hello.js</sv:value>
+      </sv:property>
+    </sv:node>
+  </sv:node>
+</sv:node>
+
